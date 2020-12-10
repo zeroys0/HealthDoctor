@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y185"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y80"
+            android:layout_marginBottom="@dimen/y44"
+            android:text="立即申请"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x45" />
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_examine"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y160"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_grey"
+        android:textSize="@dimen/x42"
+        android:layout_marginTop="@dimen/y90"
+        android:text="请先注册成为家庭医生后才可解锁此功能"
+
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_confirm"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y137"
+        android:text="确定"
+        android:id="@+id/btn_confirm"/>
+
+
+
+</LinearLayout>

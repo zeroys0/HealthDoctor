@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">HealthDoctor</string>
+
+    <array name="subject_type">
+        <item>常见科室</item>
+        <item>内科</item>
+        <item>外科</item>
+        <item>其他科</item>
+    </array>
+
+    <array name="often_subject">
+        <item>全科</item>
+        <item>消化内科</item>
+        <item>口腔科</item>
+        <item>骨科</item>
+        <item>泌尿外科</item>
+        <item>皮肤科</item>
+        <item>耳鼻咽喉科</item>
+    </array>
+
+    <array name="in_subject">
+        <item>呼吸内科</item>
+        <item>普内科</item>
+        <item>感染科/传染科</item>
+        <item>心血管科</item>
+        <item>神经内科</item>
+        <item>肾脏内科</item>
+        <item>风湿免疫科</item>
+        <item>内分泌科</item>
+        <item>血液科</item>
+    </array>
+
+    <array name="out_subject">
+        <item>普外科</item>
+        <item>心胸外科</item>
+        <item>神经外科</item>
+        <item>肝胆胰乳腺</item>
+        <item>甲状腺乳腺</item>
+        <item>美容整形科</item>
+    </array>
+
+    <array name="other_subject">
+        <item>眼科</item>
+        <item>肿瘤科</item>
+        <item>药剂科</item>
+        <item>疫苗科</item>
+        <item>影像经验科</item>
+        <item>精神心理科</item>
+        <item>儿科</item>
+        <item>妇科</item>
+        <item>性病科</item>
+    </array>
+
+    <string name="str_recorder_normal">按住说话</string>
+    <string name="str_recorder_recording">松开结束</string>
+    <string name="str_recorder_want_cancel">松开手指，取消发送</string>
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/x966"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_radius"
+    android:layout_marginTop="@dimen/y30"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y29">
+
+        <net.leelink.healthdoctor.view.CircleImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/x81"
+            android:layout_height="@dimen/y81"
+            android:layout_marginLeft="@dimen/x45"
+            android:src="@drawable/default_head" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x176"
+            android:text="name"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x344"
+            android:text="sex"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:id="@+id/tv_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x429"
+            android:text="age"
+            android:textColor="@color/text_black" />
+
+        <net.leelink.healthdoctor.util.RatingBar
+            android:id="@+id/rt_attitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x561"
+            app:selectedNumber="5"
+            app:starDistance="@dimen/x8"
+            app:starEmptyRes="@drawable/star"
+            app:starHalfRes="@drawable/star_half"
+            app:starSelectedRes="@drawable/star_full" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x41"
+        android:layout_marginTop="@dimen/y24"
+        android:layout_marginRight="@dimen/x41"
+        android:text="张大夫非常好,无敌了都"
+        android:textColor="@color/text_grey" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"
+        android:layout_marginLeft="@dimen/x39"
+        android:layout_marginTop="@dimen/y29"
+        android:layout_marginRight="@dimen/x39"
+        android:background="@color/bg" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x44"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_marginBottom="@dimen/y33"
+        android:text="2020-11-16 10:30"
+        android:textColor="@color/text_grey" />
+</LinearLayout>
