@@ -2,32 +2,31 @@ package net.leelink.healthdoctor.bean;
 
 public class CardBean {
 
+    private String id;
+    private String card;
+    private String bank;
 
-    private String bindId;
-    private String bankCard;
-    private String bankName;
-
-    public String getBindId() {
-        return bindId;
+    public String getId() {
+        return id;
     }
 
-    public void setBindId(String bindId) {
-        this.bindId = bindId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getBankCard() {
-        return bankCard;
+    public String getCard() {
+        return card;
     }
 
-    public void setBankCard(String bankCard) {
-        this.bankCard = bankCard;
+    public void setCard(String card) {
+        this.card = card;
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getBank() {
+        return bank;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 }

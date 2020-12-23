@@ -9,8 +9,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
@@ -23,9 +26,15 @@ import android.util.Log;
 import com.allenliu.versionchecklib.v2.builder.NotificationBuilder;
 
 import net.leelink.healthdoctor.R;
+import net.leelink.healthdoctor.app.MyApplication;
+import net.leelink.healthdoctor.im.data.MessageDataHelper;
+import net.leelink.healthdoctor.im.modle.ChatMessage;
 import net.leelink.healthdoctor.im.util.Util;
+import net.leelink.healthdoctor.util.Urls;
 
 import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URI;
 
@@ -40,6 +49,7 @@ public class JWebSocketClientService extends Service {
     public JWebSocketClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
     private final static int GRAY_SERVICE_ID = 1001;
+    String clientId;
     //灰色保活
     public static class GrayInnerService extends Service {
 
@@ -137,11 +147,39 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient() {
-        URI uri = URI.create(Util.ws);
+        SharedPreferences sp = getSharedPreferences("sp",0);
+        clientId = sp.getString("clientId","");
+        String ws = sp.getString("ws","");
+        URI uri = URI.create(ws+clientId);
+        Log.e( "initSocketClient: ", ws+clientId);
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(message);
+                    if (jsonObject.has("messageType")) {
+                        if (jsonObject.getInt("messageType") == 4) {
+                            String content = jsonObject.getString("textMessage");
+                            MessageDataHelper messageDataHelper = new MessageDataHelper(getApplicationContext());
+                            SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                            ContentValues cv = new ContentValues();
+                            cv.put("content",content);
+                            cv.put("time",System.currentTimeMillis() + "");
+                            cv.put("isMeSend",0);
+                            cv.put("isRead",1);
+                            cv.put("sendId",clientId);
+                            cv.put("receiveId",jsonObject.getString("fromuserId"));
+                            cv.put("type",jsonObject.getInt("type"));
+                            cv.put("RecorderTime",0);
+                            db.insert("MessageDataBase",null,cv);
+                            db.close();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");

@@ -76,7 +76,7 @@ public class SignApplyFragment extends BaseFragment implements OnSignListener {
     }
 
     public void initList() {
-        OkGo.<String>get(Urls.FAMILY_APPLY)
+        OkGo.<String>get(Urls.getInstance().FAMILY_APPLY)
                 .tag(this)
                 .headers("token", MyApplication.token)
                 .params("pageNum", page)
@@ -184,7 +184,7 @@ public class SignApplyFragment extends BaseFragment implements OnSignListener {
         } catch (JSONException e) {
 
         }
-        OkGo.<String>post(Urls.FAMILY_VERTIFY)
+        OkGo.<String>post(Urls.getInstance().FAMILY_VERTIFY)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

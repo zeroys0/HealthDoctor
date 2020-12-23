@@ -15,7 +15,7 @@
         android:layout_marginTop="5dp">
 
         <ImageView
-            android:id="@+id/jmui_avatar_iv"
+            android:id="@+id/img_head_receiver"
             style="@style/jmui_chat_item_receiver_avatar_style"/>
         <ImageView
             android:layout_width="225dp"
@@ -56,7 +56,7 @@
                 style="@style/jmui_chat_display_name_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/jmui_avatar_iv"/>
+                android:layout_toRightOf="@id/img_head_receiver"/>
 
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_below="@id/tv_display_name"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@id/jmui_avatar_iv"
+                android:layout_toRightOf="@id/img_head_receiver"
                 android:autoLink="web"
                 android:background="@drawable/jmui_msg_receive_bg"
                 android:paddingLeft="15dp"

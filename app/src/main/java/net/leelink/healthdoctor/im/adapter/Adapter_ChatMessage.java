@@ -46,13 +46,16 @@ public class Adapter_ChatMessage extends BaseAdapter {
     //item 最小最大值
     private int mMinItemWidth;
     private int mMaxIItemWidth;
+    String send_head;
+    String recerve_head;
 
 
-    public Adapter_ChatMessage(Context context, List<ChatMessage> list) {
+    public Adapter_ChatMessage(Context context, List<ChatMessage> list,String send_head,String recerve_head) {
         this.mChatMessageList = list;
         this.context = context;
         inflater = LayoutInflater.from(context);
-
+        this.send_head = send_head;
+        this.recerve_head = recerve_head;
         //获取屏幕宽度
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -109,6 +112,8 @@ public class Adapter_ChatMessage extends BaseAdapter {
                 holder.tv_display_name = view.findViewById(R.id.tv_display_name);
                 holder.img_picture = view.findViewById(R.id.img_picture);
                 holder.id_recorder_length = view.findViewById(R.id.id_recorder_length);
+                holder.img_head_receiver = view.findViewById(R.id.img_head_receiver);
+                Glide.with(context).load(Urls.getInstance().IMG_URL + recerve_head).into(holder.img_head_receiver);
             } else {
                 view = inflater.inflate(R.layout.item_chat_send_text, viewGroup, false);
                 holder.tv_content = view.findViewById(R.id.tv_content);
@@ -117,6 +122,8 @@ public class Adapter_ChatMessage extends BaseAdapter {
                 holder.img_picture = view.findViewById(R.id.img_picture);
                 holder.id_recorder_length = view.findViewById(R.id.id_recorder_length);
 //                holder.id_recorder_time = view.findViewById(R.id.id_recorder_time);
+                holder.img_head_send = view.findViewById(R.id.img_head_send);
+                Glide.with(context).load(Urls.getInstance().IMG_URL + send_head).into(holder.img_head_send);
             }
 
             view.setTag(holder);
@@ -125,13 +132,15 @@ public class Adapter_ChatMessage extends BaseAdapter {
         }
 
         holder.tv_sendtime.setText(time);
+
+
         if(mChatMessage.getType()==1) {
             holder.tv_content.setVisibility(View.VISIBLE);
             holder.tv_content.setText(content);
         }else if(mChatMessage.getType() ==2) {
             holder.tv_content.setVisibility(View.GONE);
             holder.img_picture.setVisibility(View.VISIBLE);
-            Glide.with(context).load(Urls.IMG_URL +content).into(holder.img_picture);
+            Glide.with(context).load(Urls.getInstance().IMG_URL +content).into(holder.img_picture);
         } else if(mChatMessage.getType() ==3) {
             holder.tv_content.setVisibility(View.GONE);
             holder.id_recorder_length.setVisibility(View.VISIBLE);
@@ -143,8 +152,8 @@ public class Adapter_ChatMessage extends BaseAdapter {
             } else {
                 //设置背景的宽度
                 ViewGroup.LayoutParams lp = holder.id_recorder_length.getLayoutParams();
-                Log.e( "getView: ", getDurationInMilliseconds(Urls.IMG_URL+content)+"");
-                lp.width = (int) (mMinItemWidth + (mMaxIItemWidth / 60f*getDurationInMilliseconds(Urls.IMG_URL+content)));
+                Log.e( "getView: ", getDurationInMilliseconds(Urls.getInstance().IMG_URL+content)+"");
+                lp.width = (int) (mMinItemWidth + (mMaxIItemWidth / 60f*getDurationInMilliseconds(Urls.getInstance().IMG_URL+content)));
             }
         }
 
@@ -171,7 +180,7 @@ public class Adapter_ChatMessage extends BaseAdapter {
 
     class ViewHolder {
         private TextView tv_content, tv_sendtime, tv_display_name, tv_isRead,id_recorder_time;
-        private ImageView img_picture;
+        private ImageView img_picture,img_head_send,img_head_receiver;
         private LinearLayout id_recorder_length;
     }
 

@@ -68,7 +68,7 @@ public class ChooseHospitalActivity extends BaseActivity implements OnLocalListe
     }
 
     public void initList(){
-        OkGo.<String>get(Urls.GETPROVINCE)
+        OkGo.<String>get(Urls.getInstance().GETPROVINCE)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -121,7 +121,7 @@ public class ChooseHospitalActivity extends BaseActivity implements OnLocalListe
     }
 
     public void initLocalList(String id){
-        OkGo.<String>get(Urls.GETCOUNTY)
+        OkGo.<String>get(Urls.getInstance().GETCOUNTY)
                 .tag(this)
                 .params("id",id)
                 .execute(new StringCallback() {
@@ -151,7 +151,7 @@ public class ChooseHospitalActivity extends BaseActivity implements OnLocalListe
     }
 
     public void initCityList(String id){
-        OkGo.<String>get(Urls.GETCITY)
+        OkGo.<String>get(Urls.getInstance().GETCITY)
                 .tag(this)
                 .params("id",id)
                 .execute(new StringCallback() {

@@ -5,56 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg">
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/jmui_menu_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:background="@color/jmui_jpush_blue">
+        android:layout_height="@dimen/y125"
+        android:background="@color/white">
 
-        <ImageButton
-            android:id="@+id/iv_return"
-            android:layout_width="@dimen/title_bar_height"
-            android:layout_height="match_parent"
-            android:background="@drawable/jmui_back_btn_bg"
-            android:src="@drawable/arrow_left_black" />
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y125">
 
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x45"
+                android:layout_marginTop="@dimen/y40"
+                android:src="@drawable/arrow_left_black" />
+        </RelativeLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_return"
-            android:orientation="horizontal">
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y25"
+            android:layout_marginBottom="@dimen/y24"
+            android:text=""
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x45" />
 
-            <TextView
-                android:id="@+id/tv_groupOrContactName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="190dp"
-                android:singleLine="true"
-                android:text="服务器"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/jmui_group_num_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/jmui_right_btn"
-            android:layout_width="@dimen/title_bar_height"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/jmui_back_btn_bg"
-            android:src="@drawable/jmui_chat_detail" />
     </RelativeLayout>
 
     <ListView
@@ -62,9 +48,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:divider="@null" />
+        android:divider="@null"
+        android:background="@color/bg"/>
 
-
-    <include layout="@layout/view_keyboard_xhs" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_bottom_btn"
+        >
+            <Button
+                android:layout_width="@dimen/x495"
+                android:layout_height="@dimen/y132"
+                android:id="@+id/btn_refuse"
+                android:text="退诊"
+                android:background="@drawable/bg_blue_bg_stroke"
+                android:layout_marginLeft="@dimen/x32"
+                android:layout_marginBottom="@dimen/y36"
+                android:textColor="@color/blue"
+                />
+        <Button
+            android:layout_width="@dimen/x495"
+            android:layout_height="@dimen/y132"
+            android:id="@+id/btn_confirm"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x32"
+            android:text="接诊"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_enter"
+            />
+    </RelativeLayout>
+    <include layout="@layout/view_keyboard_xhs"
+        android:visibility="gone"
+        android:id="@+id/chat_layout"/>
 
 </LinearLayout>

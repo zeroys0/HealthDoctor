@@ -141,7 +141,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<String>post(Urls.ADVICE)
+        OkGo.<String>post(Urls.getInstance().ADVICE)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

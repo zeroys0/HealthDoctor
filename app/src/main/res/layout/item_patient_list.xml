@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y138"
+    android:background="@color/white">
+    <net.leelink.healthdoctor.view.CircleImageView
+        android:layout_width="@dimen/x85"
+        android:layout_height="@dimen/y85"
+        android:src="@drawable/default_head"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x33"
+        android:id="@+id/img_head"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_name"
+        android:textColor="@color/text_black"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x170"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_sex"
+        android:textColor="@color/text_black"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x338"
+        android:text="男"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_age"
+        android:textColor="@color/text_black"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x423"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_time"
+        android:textColor="@color/text_black"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/x33"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x35"
+
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/bg"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

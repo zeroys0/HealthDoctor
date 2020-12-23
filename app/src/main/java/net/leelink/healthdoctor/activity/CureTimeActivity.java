@@ -141,7 +141,7 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
         data_list.setLayoutManager(layoutManager);
         data_list.setAdapter(dateListAdapter);
 
-        OkGo.<String>get(Urls.RECEPTION + "/" + MyApplication.userInfo.getId() + "/" + getIntent().getIntExtra("type", 0))
+        OkGo.<String>get(Urls.getInstance().RECEPTION + "/" + MyApplication.userInfo.getId() + "/" + getIntent().getIntExtra("type", 0))
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -301,7 +301,7 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
             e.printStackTrace();
         }
         Log.e("confirm: ", jsonObject.toString());
-        OkGo.<String>post(Urls.RECEPTION)
+        OkGo.<String>post(Urls.getInstance().RECEPTION)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

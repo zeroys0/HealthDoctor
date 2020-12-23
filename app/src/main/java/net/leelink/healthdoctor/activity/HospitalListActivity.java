@@ -62,7 +62,7 @@ public class HospitalListActivity extends BaseActivity implements OnOrderListene
     }
 
     public void initList(){
-        OkGo.<String>get(Urls.HOSPITAL)
+        OkGo.<String>get(Urls.getInstance().HOSPITAL)
                 .tag(this)
                 .params("areaNo",getIntent().getStringExtra("local_id"))
                 .execute(new StringCallback() {

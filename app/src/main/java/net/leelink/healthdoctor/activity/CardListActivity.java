@@ -54,6 +54,7 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_list);
         init();
+        context = this;
         initData();
         initSlide();
     }
@@ -68,7 +69,7 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
 
     public void initData(){
 
-        OkGo.<String>get(Urls.BIND_BANK)
+        OkGo.<String>get(Urls.getInstance().BIND_BANK)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -164,11 +165,11 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
         card_list.setOnItemClickListener(new com.yanzhenjie.recyclerview.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-    //                Intent intent = new Intent(WithdrawActivity.this, ConfirmWithdrawActivity.class);
-    //                intent.putExtra("card_number", list.get(position).getBankCard());
-    //                intent.putExtra("balance",getIntent().getStringExtra("balance"));
-    //                intent.putExtra("bank_name",list.get(position).getBankName());
-    //                startActivity(intent);
+                    Intent intent = new Intent(context, ConfirmWithdrawActivity.class);
+                    intent.putExtra("card_number", list.get(position).getCard());
+                    intent.putExtra("bank_name",list.get(position).getBank());
+                    intent.putExtra("id",list.get(position).getId());
+                    startActivity(intent);
             }
         });
 
@@ -176,9 +177,9 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void delete(int position){
-        OkGo.<String>delete(Urls.BIND_BANK)
+        OkGo.<String>delete(Urls.getInstance().BIND_BANK)
                 .tag(this)
-                .params("bankId",list.get(position).getBindId())
+                .params("bankId",list.get(position).getId())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -187,7 +188,8 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
                             JSONObject json =  new JSONObject(body);
                             Log.d("删除银行卡", json.toString());
                             if (json.getInt("status") == 200) {
-                                Toast.makeText(context, json.getString("message"), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "删除成功", Toast.LENGTH_LONG).show();
+                                initData();
                             } else {
                                 Toast.makeText(context, json.getString("message"), Toast.LENGTH_LONG).show();
                             }

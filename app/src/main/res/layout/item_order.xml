@@ -87,6 +87,7 @@
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginLeft="@dimen/x40"
         android:text="2020-12-10 08:00"
+        android:id="@+id/tv_time"
         />
 
     <View

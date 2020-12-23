@@ -103,16 +103,24 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="7dp"
-                android:src="@drawable/icon_face_nomal" />
+                android:src="@drawable/icon_face_nomal"
+                android:visibility="invisible"/>
 
             <!--apps 功能-->
             <ImageView
                 android:id="@+id/btn_multimedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
                 android:src="@drawable/btn_multi_bg" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/btn_multimedia"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_alignParentRight="true"-->
+            <!--                android:layout_marginRight="14dp"-->
+            <!--                android:src="@drawable/btn_multi_bg" />-->
 
             <!--发送-->
             <Button
@@ -125,7 +133,7 @@
                 android:text="发送"
                 android:textColor="@color/btn_send_textcolor"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </RelativeLayout>
     </RelativeLayout>
 

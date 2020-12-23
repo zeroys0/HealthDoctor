@@ -20,6 +20,7 @@ import com.lzy.okgo.model.HttpParams;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import net.leelink.healthdoctor.bean.UserInfo;
+import net.leelink.healthdoctor.im.util.Util;
 import net.leelink.healthdoctor.view.GlideImageLoader;
 
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ public class MyApplication extends Application {
     public static UserInfo userInfo;
 
     public static BluetoothClient mClient;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,9 +59,10 @@ public class MyApplication extends Application {
         ZXingLibrary.initDisplayOpinion(this);
 
         mClient = new BluetoothClient(this);
+        initIm();
     }
 
-    public void initImagePicker(){
+    public void initImagePicker() {
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);  //显示拍照按钮
@@ -80,14 +83,18 @@ public class MyApplication extends Application {
         return instance;
     }
 
-//    public void setUserBean(UserBean userBean){
+    //    public void setUserBean(UserBean userBean){
 //        this.userBean = userBean;
 //    }
 //
 //    public UserBean getUserBean(){
 //        return  userBean;
 //    }
-
+    public void initIm() {
+        SharedPreferences sp = getSharedPreferences("sp", 0);
+        String id = sp.getString("clientId", "");
+        Util.setId(id);
+    }
 
     public void initokGO() {
         HttpHeaders headers = new HttpHeaders();
@@ -119,7 +126,8 @@ public class MyApplication extends Application {
                 .addCommonParams(params);                       //全局公共参数
 
     }
-    public void initJPush(){
+
+    public void initJPush() {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
     }

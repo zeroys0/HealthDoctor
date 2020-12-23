@@ -79,6 +79,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/x47"
+            android:id="@+id/img_manage"
             />
 
     </RelativeLayout>
@@ -88,5 +89,6 @@
         android:id="@+id/team_list"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y1"
         />
 </LinearLayout>

@@ -114,6 +114,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void submit() {
+        if(Urls.IP.equals("")){
+            Toast.makeText(this, "请输入商户编码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (ed_telephone.getText().toString().equals("")) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return;
@@ -138,7 +142,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<String>post(Urls.REGIST)
+        OkGo.<String>post(Urls.getInstance().REGIST)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -165,9 +169,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     //发送短信验证码
     public void getSmsCode() {
+        if(Urls.IP.equals("")){
+            Toast.makeText(this, "请输入商户编码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         showProgressBar();
         if (!ed_telephone.getText().toString().trim().equals("")) {
-            OkGo.<String>post(Urls.SEND)
+            OkGo.<String>post(Urls.getInstance().SEND)
                     .tag(this)
                     .params("telephone", ed_telephone.getText().toString().trim())
                     .execute(new StringCallback() {

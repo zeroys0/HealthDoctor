@@ -75,6 +75,10 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
     //修改密码(忘记密码)
     public void resetPassword(){
+        if(Urls.IP.equals("")){
+            Toast.makeText(this, "请输入商户编码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("telephone",ed_phone.getText().toString().trim());
@@ -86,7 +90,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
         Log.e( "resetPassword: ",jsonObject.toString() );
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(JSON,String.valueOf(jsonObject));
-        OkGo.<String>post(Urls.PASSWORD)
+        OkGo.<String>post(Urls.getInstance().PASSWORD)
                 .tag(this)
                 .upRequestBody(requestBody)
 
@@ -112,8 +116,12 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
     //发送短信验证码
     public void sendSmsCode(){
+        if(Urls.IP.equals("")){
+            Toast.makeText(this, "请输入商户编码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!ed_phone.getText().toString().trim().equals("")){
-            OkGo.<String>post(Urls.SEND)
+            OkGo.<String>post(Urls.getInstance().SEND)
                     .tag(this)
                     .params("telephone", ed_phone.getText().toString().trim())
                     .execute(new StringCallback() {

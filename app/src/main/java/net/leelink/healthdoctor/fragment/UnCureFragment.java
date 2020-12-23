@@ -1,6 +1,7 @@
 package net.leelink.healthdoctor.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,9 +23,11 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import net.leelink.healthdoctor.R;
+import net.leelink.healthdoctor.adapter.OnOrderListener;
 import net.leelink.healthdoctor.adapter.OrderAdapter;
 import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.bean.OrderBean;
+import net.leelink.healthdoctor.im.ChatActivity;
 import net.leelink.healthdoctor.util.Urls;
 
 import org.json.JSONArray;
@@ -37,7 +40,7 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UnCureFragment extends BaseFragment{
+public class UnCureFragment extends BaseFragment implements OnOrderListener {
 
     Context context;
     private TwinklingRefreshLayout refreshLayout;
@@ -45,6 +48,7 @@ public class UnCureFragment extends BaseFragment{
     boolean hasNextPage;
     List<OrderBean> list = new ArrayList<>();
     OrderAdapter orderAdapter;
+    private RecyclerView order_list;
     @Override
     public void handleCallBack(Message msg) {
 
@@ -63,20 +67,22 @@ public class UnCureFragment extends BaseFragment{
     @Override
     public void onResume() {
         super.onResume();
+        list.clear();
         initList();
     }
 
     public void init(View view){
-
+        order_list = view.findViewById(R.id.order_list);
     }
 
     public void initList(){
-        OkGo.<String>get(Urls.ORDER)
+        OkGo.<String>get(Urls.getInstance().ORDER)
                 .tag(this)
                 .headers("token", MyApplication.token)
                 .params("pageNum",page)
                 .params("pageSize",10)
                 .params("type",2)
+                .params("state",2)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -88,7 +94,13 @@ public class UnCureFragment extends BaseFragment{
                                 json =  json.getJSONObject("data");
                                 JSONArray jsonArray = json.getJSONArray("list");
                                 hasNextPage = json.getBoolean("hasNextPage");
-
+                                Gson gson = new Gson();
+                                List<OrderBean> orderBeans = gson.fromJson(jsonArray.toString(),new TypeToken<List<OrderBean>>(){}.getType());
+                                list.addAll(orderBeans);
+                                orderAdapter = new OrderAdapter(list,context,UnCureFragment.this);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
+                                order_list.setLayoutManager(layoutManager);
+                                order_list.setAdapter(orderAdapter);
                             } else if(json.getInt("status") == 505){
                                 reLogin(context);
                             }else {
@@ -116,7 +128,7 @@ public class UnCureFragment extends BaseFragment{
                     @Override
                     public void run() {
                         refreshLayout.finishRefreshing();
-                      //  list.clear();
+                        list.clear();
                         page = 1;
                         initList();
 
@@ -149,4 +161,20 @@ public class UnCureFragment extends BaseFragment{
 
     }
 
+    @Override
+    public void onItemClick(View view) {
+        int position = order_list.getChildLayoutPosition(view);
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("clientId",list.get(position).getClientId());
+        intent.putExtra("receive_head",list.get(position).getHeadImg());
+        intent.putExtra("remark",list.get(position).getRemark());
+        intent.putExtra("state",0);
+        intent.putExtra("orderId",list.get(position).getOrderId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onButtonClick(View view, int position) {
+
+    }
 }

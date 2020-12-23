@@ -36,7 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x344"
-            android:text="sex"
+            android:text="男"
             android:textColor="@color/text_black" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:textColor="@color/text_black" />
 
         <net.leelink.healthdoctor.util.RatingBar
-            android:id="@+id/rt_attitude"
+            android:id="@+id/rt_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

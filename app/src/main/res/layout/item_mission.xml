@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y160"
+    android:layout_marginLeft="@dimen/x30"
+
+    android:layout_marginTop="@dimen/y15"
+    android:layout_marginRight="@dimen/x30"
+    android:background="@drawable/bg_white_radius"
+
+    >
+
+    <TextView
+        android:id="@+id/tv_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x63"
+        android:layout_marginTop="@dimen/y35"
+        android:text="12日"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/x42" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/x75"
+        android:layout_marginBottom="@dimen/y25"
+        android:text="10月"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/x30"
+        android:id="@+id/tv_month"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x60"
+        android:layout_centerVertical="true"
+        android:textColor="#ff4343"
+        android:id="@+id/tv_get_time"
+        />
+
+</RelativeLayout>

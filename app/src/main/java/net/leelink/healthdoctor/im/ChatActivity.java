@@ -4,12 +4,16 @@ import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -26,6 +30,7 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +38,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
@@ -40,9 +46,10 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import net.leelink.healthdoctor.R;
-import net.leelink.healthdoctor.activity.PersonalInfoActivity;
-import net.leelink.healthdoctor.app.BaseActivity;
+import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.im.adapter.Adapter_ChatMessage;
+import net.leelink.healthdoctor.im.data.MessageDataHelper;
+import net.leelink.healthdoctor.im.data.MessageListHelper;
 import net.leelink.healthdoctor.im.modle.ChatMessage;
 import net.leelink.healthdoctor.im.util.Util;
 import net.leelink.healthdoctor.im.view.AudioRecorderButton;
@@ -50,24 +57,18 @@ import net.leelink.healthdoctor.im.websocket.JWebSocketClient;
 import net.leelink.healthdoctor.im.websocket.JWebSocketClientService;
 import net.leelink.healthdoctor.util.BitmapCompress;
 import net.leelink.healthdoctor.util.Urls;
+import net.leelink.healthdoctor.util.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -81,7 +82,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private JWebSocketClientService jWebSClientService;
     private EditText et_content;
     private ListView listView;
-    private Button btn_send;
+    private Button btn_send,btn_refuse,btn_confirm;
     private ImageView btn_multimedia,btn_voice_or_text;
     private List<ChatMessage> chatMessageList = new ArrayList<>();//消息列表
     private Adapter_ChatMessage adapter_chatMessage;
@@ -91,7 +92,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton iv_return;
     private AudioRecorderButton id_recorder_button;
     private int type = 1;
-    private RelativeLayout rl_input;
+    private RelativeLayout rl_input,rl_back,rl_bottom_btn;
+    private View chat_layout;
+    MessageDataHelper messageDataHelper;
+    String clientId;
+    private TextView text_title;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -140,12 +145,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_chat);
         mContext = ChatActivity.this;
+        SharedPreferences sp = getSharedPreferences("sp",0);
+        clientId = sp.getString("clientId","");
+        messageDataHelper = new MessageDataHelper(this);
         //启动服务
         startJWebSClientService();
-        //绑定服务
+//        //绑定服务
         bindService();
         //注册广播
         doRegisterReceiver();
@@ -153,6 +160,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         checkNotification(mContext);
         findViewById();
         initView();
+        initList();
     }
 
     /**
@@ -188,13 +196,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         btn_send.setOnClickListener(this);
         btn_multimedia = findViewById(R.id.btn_multimedia);
         btn_multimedia.setOnClickListener(this);
-        iv_return = findViewById(R.id.iv_return);
-        iv_return.setOnClickListener(this);
+        rl_back = findViewById(R.id.rl_back);
+        rl_back.setOnClickListener(this);
         btn_voice_or_text = findViewById(R.id.btn_voice_or_text);
         btn_voice_or_text.setOnClickListener(this);
         id_recorder_button = findViewById(R.id.id_recorder_button);
         rl_input = findViewById(R.id.rl_input);
-
+        rl_bottom_btn = findViewById(R.id.rl_bottom_btn);
+        chat_layout = findViewById(R.id.chat_layout);
+        btn_refuse = findViewById(R.id.btn_refuse);
+        btn_refuse.setOnClickListener(this);
+        btn_confirm = findViewById(R.id.btn_confirm);
+        btn_confirm.setOnClickListener(this);
         id_recorder_button.setAudioFinishRecorderListener(new AudioRecorderButton.AudioFinishRecorderListener() {
             @Override
             public void onFinish(float seconds, String filePath) {
@@ -203,9 +216,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+        text_title = findViewById(R.id.text_title);
+        text_title.setText(getIntent().getStringExtra("name"));
     }
 
     private void initView() {
+        Utils.setStatusBarColor(this,R.color.white);
+        if(getIntent().getIntExtra("state",0)==0) {
+            chat_layout.setVisibility(View.GONE);
+            rl_bottom_btn.setVisibility(View.VISIBLE);
+        } else {
+            chat_layout.setVisibility(View.VISIBLE);
+            rl_bottom_btn.setVisibility(View.GONE);
+        }
         //监听输入框的变化
         et_content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,6 +252,52 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    public void initList(){
+        SQLiteDatabase db=messageDataHelper.getReadableDatabase();
+        String sql="select content,time,isMeSend,isRead,type,RecorderTime from MessageDataBase where sendId=? and receiveId=?";
+        Cursor c = db.rawQuery(sql,new String[]{clientId,getIntent().getStringExtra("clientId")});
+        String content;
+        String time;
+        int isMeSend;
+        int isRead;
+        int type;
+        float RecorderTime;
+        while(c.moveToNext()){
+            content=c.getString(0);
+            time=c.getString(1);
+            isMeSend=c.getInt(2);
+            isRead=c.getInt(3);
+            type = c.getInt(4);
+            RecorderTime = c.getFloat(5);
+            ChatMessage chatMessage = new ChatMessage();
+            chatMessage.setContent(content);
+            chatMessage.setTime(time);
+            chatMessage.setIsMeSend(isMeSend);
+            chatMessage.setIsRead(isRead);
+            chatMessage.setType(type);
+            chatMessage.setRecorderTime(RecorderTime);
+            chatMessageList.add(chatMessage);
+        }
+        db.close();
+        c.close();
+        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
+        listView.setAdapter(adapter_chatMessage);
+        listView.setSelection(chatMessageList.size());
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //播放音频  完成后改回原来的background
+                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -241,14 +310,26 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("message", content);
-                    jsonObject.put("userId", 5);
-                    jsonObject.put("to", 4);
+                    jsonObject.put("userId", clientId);
+                    jsonObject.put("to", getIntent().getStringExtra("clientId"));
                     jsonObject.put("type", 1);
+                    jsonObject.put("Id",System.currentTimeMillis());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 if (client != null && client.isOpen()) {
+                    SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                    ContentValues cv = new ContentValues();
+                    cv.put("content",content);
+                    cv.put("time",System.currentTimeMillis() + "");
+                    cv.put("isMeSend",1);
+                    cv.put("isRead",1);
+                    cv.put("sendId",clientId);
+                    cv.put("receiveId",getIntent().getStringExtra("clientId"));
+                    cv.put("type",1);
+                    cv.put("RecorderTime",0);
+                    db.insert("MessageDataBase",null,cv);
                     jWebSClientService.sendMsg(jsonObject.toString());
                     //暂时将发送的消息加入消息列表，实际以发送成功为准（也就是服务器返回你发的消息时）
                     ChatMessage chatMessage = new ChatMessage();
@@ -260,6 +341,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     chatMessageList.add(chatMessage);
                     initChatMsgListView();
                     et_content.setText("");
+                    db.close();
                 } else {
                     Util.showToast(mContext, "连接已断开，请稍等或重启App哟");
                 }
@@ -280,8 +362,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     type = 1;
                 }
                 break;
-            case R.id.iv_return:
+            case R.id.rl_back:
                 finish();
+                break;
+            case R.id.btn_refuse:       //拒接
+                refuse();
+                break;
+            case R.id.btn_confirm:      //接单
+                confirm();
                 break;
             default:
                 break;
@@ -303,7 +391,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initChatMsgListView() {
-        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList);
+        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
         listView.setAdapter(adapter_chatMessage);
         listView.setSelection(chatMessageList.size());
 
@@ -311,7 +399,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //播放音频  完成后改回原来的background
-                MediaManager.playSound(Urls.IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
+                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
 
@@ -328,7 +416,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
      */
     public String getPath(File file) {
         final String[] s = {""};
-        OkGo.<String>post(Urls.PHOTO)
+        OkGo.<String>post(Urls.getInstance().PHOTO)
                 .tag(this)
                 .params("multipartFile", file)
                 .execute(new StringCallback() {
@@ -343,14 +431,25 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject();
                                 try {
                                     jsonObject.put("message", content);
-                                    jsonObject.put("userId", 5);
-                                    jsonObject.put("to", 4);
+                                    jsonObject.put("userId", clientId);
+                                    jsonObject.put("to", getIntent().getStringExtra("clientId"));
                                     jsonObject.put("type", 2);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                                 if (client != null && client.isOpen()) {
+                                    SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("content",content);
+                                    cv.put("time",System.currentTimeMillis() + "");
+                                    cv.put("isMeSend",1);
+                                    cv.put("isRead",1);
+                                    cv.put("sendId",clientId);
+                                    cv.put("receiveId",getIntent().getStringExtra("clientId"));
+                                    cv.put("type",2);
+                                    cv.put("RecorderTime",0);
+                                    db.insert("MessageDataBase",null,cv);
                                     jWebSClientService.sendMsg(jsonObject.toString());
                                     //暂时将发送的消息加入消息列表，实际以发送成功为准（也就是服务器返回你发的消息时）
                                     ChatMessage chatMessage = new ChatMessage();
@@ -362,6 +461,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                                     chatMessageList.add(chatMessage);
                                     initChatMsgListView();
                                     et_content.setText("");
+                                    db.close();
                                 } else {
                                     Util.showToast(mContext, "连接已断开，请稍等或重启App哟");
                                 }
@@ -382,9 +482,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         return s[0];
     }
 
+    /**
+     * 上传音频文件获取音频地址
+     * @param file
+     * @param seconds
+     * @return
+     */
     public String sendRecorder(File file, final float seconds){
         final String[] s = {""};
-        OkGo.<String>post(Urls.MP3)
+        OkGo.<String>post(Urls.getInstance().MP3)
                 .tag(this)
                 .params("multipartFile", file)
                 .execute(new StringCallback() {
@@ -399,14 +505,25 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject();
                                 try {
                                     jsonObject.put("message", content);
-                                    jsonObject.put("userId", 5);
-                                    jsonObject.put("to", 4);
+                                    jsonObject.put("userId", clientId);
+                                    jsonObject.put("to", getIntent().getStringExtra("clientId"));
                                     jsonObject.put("type", 3);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                                 if (client != null && client.isOpen()) {
+                                    SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("content",content);
+                                    cv.put("time",System.currentTimeMillis() + "");
+                                    cv.put("isMeSend",1);
+                                    cv.put("isRead",1);
+                                    cv.put("sendId",clientId);
+                                    cv.put("receiveId",getIntent().getStringExtra("clientId"));
+                                    cv.put("type",3);
+                                    cv.put("RecorderTime",seconds);
+                                    db.insert("MessageDataBase",null,cv);
                                     jWebSClientService.sendMsg(jsonObject.toString());
                                     //暂时将发送的消息加入消息列表，实际以发送成功为准（也就是服务器返回你发的消息时）
                                     ChatMessage chatMessage = new ChatMessage();
@@ -419,6 +536,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                                     chatMessageList.add(chatMessage);
                                     initChatMsgListView();
                                     et_content.setText("");
+
                                 } else {
                                     Util.showToast(mContext, "连接已断开，请稍等或重启App哟");
                                 }
@@ -437,6 +555,66 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
         return s[0];
+    }
+
+    /**
+     * 医生接诊
+     */
+    public void confirm(){
+        OkGo.<String>post(Urls.getInstance().CONFIRM+"/"+getIntent().getStringExtra("orderId"))
+                .tag(this)
+                .headers("token", MyApplication.token)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            String body = response.body();
+                            JSONObject json = new JSONObject(body);
+                            Log.d("接单", json.toString());
+                            if (json.getInt("status") == 200) {
+                                rl_bottom_btn.setVisibility(View.GONE);
+                                chat_layout.setVisibility(View.VISIBLE);
+                            } else if(json.getInt("status") == 505){
+//                                reLogin(mContext);
+                            }else {
+                                Toast.makeText(mContext, json.getString("message"), Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 拒接
+     */
+    public void refuse(){
+        OkGo.<String>post(Urls.getInstance().NO_CONFIRM+"/"+getIntent().getStringExtra("orderId")+"/"+"reason")
+                .tag(this)
+                .headers("token", MyApplication.token)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            String body = response.body();
+                            JSONObject json = new JSONObject(body);
+                            Log.d("拒接订单", json.toString());
+                            if (json.getInt("status") == 200) {
+                                Toast.makeText(mContext, "已拒绝", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else if(json.getInt("status") == 505){
+//                                reLogin(mContext);
+                            }else {
+                                Toast.makeText(mContext, json.getString("message"), Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
 
@@ -524,36 +702,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         return false;
-    }
-
-
-    //数据类
-    class Recorder{
-
-        float time;
-        String filePath;
-
-        public float getTime() {
-            return time;
-        }
-
-        public void setTime(float time) {
-            this.time = time;
-        }
-
-        public String getFilePath() {
-            return filePath;
-        }
-
-        public void setFilePath(String filePath) {
-            this.filePath = filePath;
-        }
-
-        public Recorder(float time, String filePath) {
-            super();
-            this.time = time;
-            this.filePath = filePath;
-        }
     }
 
 

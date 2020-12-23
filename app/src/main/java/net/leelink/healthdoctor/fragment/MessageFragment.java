@@ -96,7 +96,7 @@ public class MessageFragment extends BaseFragment {
     }
 
     public void getState(){
-        OkGo.<String>get(Urls.IN_DOCKER)
+        OkGo.<String>get(Urls.getInstance().IN_DOCKER)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

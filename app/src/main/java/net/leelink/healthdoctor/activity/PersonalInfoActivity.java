@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,12 +31,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.app.BaseActivity;
+import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.bean.HospitalBean;
 import net.leelink.healthdoctor.util.BitmapCompress;
 import net.leelink.healthdoctor.util.Urls;
@@ -47,10 +52,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
     private RelativeLayout rl_back, rl_hospital, rl_subject;
-    private TextView tv_hospital, tv_subject;
+    private TextView tv_hospital, tv_subject,tv_professional;
     private Button btn_confirm;
     private ImageView img_head, id_card, id_card_back, img_tag, img_physician, img_diploma, img_title;
     private File head_file, card_file, card_back_file, tag_file, physician_file, diploma_file, title_file;
@@ -77,7 +84,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private final static int TITLE_ALBUM = 13;
     private final static int TITLE_PHOTO = 14;
     String cardBackPath, cardPositivePath, diplomaImgPath, physicianImgPath, tagImgPath, titleImgPath, imgPath;
-    private EditText ed_subject_phone,ed_skill,ed_name,ed_contact_name,ed_phone,tv_professional,ed_work_exp;
+    private EditText ed_subject_phone,ed_skill,ed_name,ed_contact_name,ed_phone,ed_work_exp;
+
     String hospitalId;
 
 
@@ -122,6 +130,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         ed_contact_name = findViewById(R.id.ed_contact_name);
         ed_phone = findViewById(R.id.ed_phone);
         tv_professional = findViewById(R.id.tv_professional);
+        tv_professional.setOnClickListener(this);
         ed_work_exp = findViewById(R.id.ed_work_exp);
     }
 
@@ -175,6 +184,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.img_title:
                 showPopup(TITLE_ALBUM, TITLE_PHOTO);
                 backgroundAlpha(0.5f);
+                break;
+            case R.id.tv_professional:
+                showTitle();
                 break;
 
         }
@@ -330,7 +342,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         }
         Log.e( "submit: ",jsonObject.toString() );
 
-        OkGo.<String>put(Urls.REGIST)
+        OkGo.<String>put(Urls.getInstance().REGIST)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -356,7 +368,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     public String getPath(File file, final int type) {
         showProgressBar();
         final String[] s = {""};
-        OkGo.<String>post(Urls.PHOTO)
+        OkGo.<String>post(Urls.getInstance().PHOTO)
                 .tag(this)
                 .params("multipartFile", file)
                 .execute(new StringCallback() {
@@ -408,6 +420,30 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
         return s[0];
+    }
+
+    //弹出机构列表
+    public void showTitle() {
+        final List<String> titles = new ArrayList<>();
+        titles.add("医师");
+        titles.add("主治医师");
+        titles.add("副主任医师");
+        titles.add("主任医师");
+
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                tv_professional.setText(titles.get(options1));
+            }
+        })
+                .setDividerColor(Color.parseColor("#A0A0A0"))
+                .setTextColorCenter(Color.parseColor("#333333")) //设置选中项文字颜色
+                .setContentTextSize(18)//设置滚轮文字大小
+                .setOutSideCancelable(true)//点击外部dismiss default true
+                .build();
+        pvOptions.setPicker(titles);
+        pvOptions.show();
     }
 
     @SuppressLint("WrongConstant")

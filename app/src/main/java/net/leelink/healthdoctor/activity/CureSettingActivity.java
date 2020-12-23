@@ -104,7 +104,7 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void initData(){
-        OkGo.<String>get(Urls.OPEN_OPTION)
+        OkGo.<String>get(Urls.getInstance().OPEN_OPTION)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -170,7 +170,7 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
         }
         httpParams.put("typeId",type);
         showProgressBar();
-        OkGo.<String>post(Urls.OPEN_OPTION+"/"+type+"/"+st)
+        OkGo.<String>post(Urls.getInstance().OPEN_OPTION+"/"+type+"/"+st)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -260,7 +260,7 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
             price = tv_phone_price.getText().toString().trim();
         }
         showProgressBar();
-        OkGo.<String>post(Urls.SET_AMOUNT+"/"+t+"/"+price)
+        OkGo.<String>post(Urls.getInstance().SET_AMOUNT+"/"+t+"/"+price)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

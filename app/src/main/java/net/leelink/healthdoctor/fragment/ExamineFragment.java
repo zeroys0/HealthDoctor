@@ -59,7 +59,7 @@ public class ExamineFragment extends BaseFragment implements View.OnClickListene
 
     //申请成为家庭医生
     public void goExamine(){
-        OkGo.<String>post(Urls.FAMILY_DOCTOR)
+        OkGo.<String>post(Urls.getInstance().FAMILY_DOCTOR)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

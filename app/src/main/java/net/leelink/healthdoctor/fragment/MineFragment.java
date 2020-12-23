@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.activity.AppraiseListActivity;
@@ -17,11 +21,16 @@ import net.leelink.healthdoctor.activity.CureSettingActivity;
 import net.leelink.healthdoctor.activity.FeedBackActivity;
 import net.leelink.healthdoctor.activity.IncomeActivity;
 import net.leelink.healthdoctor.activity.PersonalInfoActivity;
+import net.leelink.healthdoctor.activity.SettingActivity;
 import net.leelink.healthdoctor.activity.SignActivity;
+import net.leelink.healthdoctor.app.MyApplication;
+import net.leelink.healthdoctor.util.Urls;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
-    RelativeLayout rl_personal_info,rl_income,rl_account,rl_appraise,rl_cure_setting,rl_oldman,rl_feedback;
+    RelativeLayout rl_personal_info,rl_income,rl_account,rl_appraise,rl_cure_setting,rl_oldman,rl_feedback,rl_setting;
     Context context;
+    private TextView tv_name,tv_professional,tv_subject,tv_hospital;
+    private ImageView img_head;
     @Override
     public void handleCallBack(Message msg) {
 
@@ -52,10 +61,21 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         rl_oldman.setOnClickListener(this);
         rl_feedback = view.findViewById(R.id.rl_feedback);
         rl_feedback.setOnClickListener(this);
+        img_head = view.findViewById(R.id.img_head);
+        tv_name = view.findViewById(R.id.tv_name);
+        tv_professional = view.findViewById(R.id.tv_professional);
+        tv_subject = view.findViewById(R.id.tv_subject);
+        tv_hospital = view.findViewById(R.id.tv_hospital);
+        rl_setting = view.findViewById(R.id.rl_setting);
+        rl_setting.setOnClickListener(this);
     }
 
     public void initData(){
-
+        Glide.with(context).load(Urls.getInstance().IMG_URL+ MyApplication.userInfo.getImgPath()).into(img_head);
+        tv_name.setText(MyApplication.userInfo.getName());
+        tv_professional.setText(MyApplication.userInfo.getDuties());
+        tv_subject.setText(MyApplication.userInfo.getDepartment());
+        tv_hospital.setText(MyApplication.userInfo.getHospital());
     }
 
     @Override
@@ -63,6 +83,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.rl_personal_info:
                 Intent intent = new Intent(getContext(), PersonalInfoActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.rl_income:
@@ -75,6 +96,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rl_appraise:
                 Intent intent3 = new Intent(getContext(), AppraiseListActivity.class);
+                intent3.putExtra("score",MyApplication.userInfo.getTotalScore());
+                intent3.putExtra("count",MyApplication.userInfo.getTotalCount());
                 startActivity(intent3);
                 break;
             case R.id.rl_cure_setting:
@@ -88,6 +111,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.rl_feedback:
                 Intent intent6 = new Intent(getContext(), FeedBackActivity.class);
                 startActivity(intent6);
+                break;
+            case R.id.rl_setting:
+                Intent intent7 = new Intent(getContext(), SettingActivity.class);
+                startActivity(intent7);
                 break;
 
         }

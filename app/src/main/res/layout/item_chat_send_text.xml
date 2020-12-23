@@ -167,7 +167,7 @@
 
 
         <ImageView
-            android:id="@+id/jmui_avatar_iv"
+            android:id="@+id/img_head_send"
             style="@style/jmui_chat_item_sender_avatar_style" />
 
     </LinearLayout>

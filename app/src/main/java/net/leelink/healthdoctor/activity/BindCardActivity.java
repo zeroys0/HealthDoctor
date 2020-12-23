@@ -89,7 +89,7 @@ public class BindCardActivity extends BaseActivity implements View.OnClickListen
 
     public void getBank(){
 
-        OkGo.<String>get(Urls.BANK)
+        OkGo.<String>get(Urls.getInstance().BANK)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -153,7 +153,7 @@ public class BindCardActivity extends BaseActivity implements View.OnClickListen
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<String>post(Urls.BIND_BANK)
+        OkGo.<String>post(Urls.getInstance().BIND_BANK)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -179,7 +179,7 @@ public class BindCardActivity extends BaseActivity implements View.OnClickListen
     //发送短信验证码
     public void sendSmsCode() {
         if (!ed_phone.getText().toString().trim().equals("")) {
-            OkGo.<String>post(Urls.SEND+"?telephone="+ed_phone.getText().toString().trim())
+            OkGo.<String>post(Urls.getInstance().SEND+"?telephone="+ed_phone.getText().toString().trim())
                     .tag(this)
 //                    .params("telephone", ed_phone.getText().toString().trim())
 //                    .params("used", 1)

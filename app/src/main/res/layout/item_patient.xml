@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/x39"
         android:textColor="@color/text_black"
-        android:text="性别"
+        android:text="男"
         android:layout_toRightOf="@+id/tv_name"
         android:layout_marginTop="@dimen/y50"
         android:layout_marginLeft="@dimen/x50"

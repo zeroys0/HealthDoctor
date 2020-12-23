@@ -41,17 +41,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(CardListAdapter.ViewHolder holder, int position) {
-        holder.tv_bank.setText(list.get(position).getBankName());
-        String number = list.get(position).getBankCard();
-        String head = number.substring(0,4);
-        String end = number.substring(number.length()-4);
-        int count =  number.length() - 8;
-        String card_no =head;
-        for(int i =0;i<count;i++){
-            card_no += "*";
-        }
-        card_no += end;
-        holder.tv_card_number.setText(card_no);
+        holder.tv_bank.setText(list.get(position).getBank());
+        String number = list.get(position).getCard();
+        holder.tv_card_number.setText(number);
     }
 
     @Override

@@ -87,7 +87,25 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/x63"/>
 
+        <RelativeLayout
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/y120"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/y100"
+            android:layout_marginRight="@dimen/x10"
+            android:id="@+id/rl_setting"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/img_setting"
+                android:id="@+id/img_setting"
+                />
+        </RelativeLayout>
+
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

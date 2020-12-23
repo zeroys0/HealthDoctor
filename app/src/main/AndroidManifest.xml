@@ -54,7 +54,14 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".im.ChatActivity"></activity>
+        <activity android:name=".activity.ConfirmWithdrawActivity"></activity>
+        <activity android:name=".activity.ChooseGroupActivity" />
+        <activity android:name=".activity.PatientActivity" />
+        <activity android:name=".activity.ManageTeamActivity" />
+        <activity android:name=".activity.PatientListActivity" />
+        <activity android:name=".activity.OrderDetailActivity" />
+        <activity android:name=".activity.OrderHistoryAvtivity" />
+        <activity android:name=".im.ChatActivity" />
         <activity android:name=".activity.ChooseSubjectActivity" />
         <activity android:name=".activity.HospitalListActivity" />
         <activity android:name=".activity.CureListActivity" />
@@ -72,6 +79,9 @@
         <activity android:name=".activity.IncomeActivity" />
         <activity android:name=".activity.PersonalInfoActivity" />
         <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.ChangePhoneActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -193,7 +203,6 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="88527d11272f251f7284c3cbff9f3e26" />
-
 
         <service
             android:name=".im.websocket.JWebSocketClientService"

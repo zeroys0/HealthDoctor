@@ -42,15 +42,16 @@ public class SignListAdapter extends RecyclerView.Adapter<SignListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Glide.with(context).load(Urls.IMG_URL+list.get(position).getHeadImgPath()).into(holder.img_head);
+        Glide.with(context).load(Urls.getInstance().IMG_URL+list.get(position).getHeadImgPath()).into(holder.img_head);
         holder.tv_name.setText(list.get(position).getElderlyName());
+        holder.tv_age.setText(list.get(position).getAge()+"岁");
         if(list.get(position).getSex() ==0) {
             holder.tv_sex.setText("男");
         } else {
             holder.tv_sex.setText("女");
         }
         holder.tv_address.setText("地址:"+list.get(position).getAddress());
-        holder.tv_time.setText("申请时间:"+list.get(position).getApplyTime()
+        holder.tv_time.setText("签约时间:"+list.get(position).getApplyTime()
         );
         if(type ==2){
             holder.btn_cancel.setVisibility(View.GONE);
@@ -77,7 +78,7 @@ public class SignListAdapter extends RecyclerView.Adapter<SignListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_head;
-        TextView tv_name,tv_sex,tv_address,tv_time;
+        TextView tv_name,tv_sex,tv_address,tv_time,tv_age;
         Button btn_cancel,btn_confirm;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +89,7 @@ public class SignListAdapter extends RecyclerView.Adapter<SignListAdapter.ViewHo
             tv_time = itemView.findViewById(R.id.tv_time);
             btn_cancel = itemView.findViewById(R.id.btn_cancel);
             btn_confirm = itemView.findViewById(R.id.btn_confirm);
+            tv_age = itemView.findViewById(R.id.tv_age);
         }
     }
 }
