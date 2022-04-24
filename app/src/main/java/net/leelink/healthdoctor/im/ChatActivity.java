@@ -1,5 +1,6 @@
 package net.leelink.healthdoctor.im;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
@@ -44,7 +45,10 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import net.leelink.healthdoctor.MainActivity;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.im.adapter.Adapter_ChatMessage;
@@ -56,6 +60,7 @@ import net.leelink.healthdoctor.im.view.AudioRecorderButton;
 import net.leelink.healthdoctor.im.websocket.JWebSocketClient;
 import net.leelink.healthdoctor.im.websocket.JWebSocketClientService;
 import net.leelink.healthdoctor.util.BitmapCompress;
+import net.leelink.healthdoctor.util.Logger;
 import net.leelink.healthdoctor.util.Urls;
 import net.leelink.healthdoctor.util.Utils;
 
@@ -73,6 +78,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import io.reactivex.functions.Consumer;
 
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
@@ -95,6 +101,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout rl_input,rl_back,rl_bottom_btn;
     private View chat_layout;
     MessageDataHelper messageDataHelper;
+    MessageListHelper messageListHelper;
     String clientId;
     private TextView text_title;
 
@@ -150,6 +157,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sp = getSharedPreferences("sp",0);
         clientId = sp.getString("clientId","");
         messageDataHelper = new MessageDataHelper(this);
+        messageListHelper = new MessageListHelper(this);
         //启动服务
         startJWebSClientService();
 //        //绑定服务
@@ -211,6 +219,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         id_recorder_button.setAudioFinishRecorderListener(new AudioRecorderButton.AudioFinishRecorderListener() {
             @Override
             public void onFinish(float seconds, String filePath) {
+
                 File file = new File(filePath);
                 sendRecorder(file,seconds);
 
@@ -320,6 +329,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (client != null && client.isOpen()) {
                     SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                    SQLiteDatabase db_list = messageListHelper.getWritableDatabase();
                     ContentValues cv = new ContentValues();
                     cv.put("content",content);
                     cv.put("time",System.currentTimeMillis() + "");
@@ -330,6 +340,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     cv.put("type",1);
                     cv.put("RecorderTime",0);
                     db.insert("MessageDataBase",null,cv);
+                    db_list.replace("MessageListDB",null,cv);
                     jWebSClientService.sendMsg(jsonObject.toString());
                     //暂时将发送的消息加入消息列表，实际以发送成功为准（也就是服务器返回你发的消息时）
                     ChatMessage chatMessage = new ChatMessage();
@@ -342,25 +353,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     initChatMsgListView();
                     et_content.setText("");
                     db.close();
+                    db_list.close();
                 } else {
                     Util.showToast(mContext, "连接已断开，请稍等或重启App哟");
                 }
                 break;
             case R.id.btn_multimedia:
+
                 Intent intent1 = new Intent(Intent.ACTION_PICK);
                 intent1.setType("image/*");
                 startActivityForResult(intent1, 4);
                 break;
             case R.id.btn_voice_or_text:
-                if(type ==1) {
-                    rl_input.setVisibility(View.INVISIBLE);
-                    id_recorder_button.setVisibility(View.VISIBLE);
-                    type = 2;
-                } else if(type ==2 ) {
-                    rl_input.setVisibility(View.VISIBLE);
-                    id_recorder_button.setVisibility(View.INVISIBLE);
-                    type = 1;
-                }
+                requestPermissions();
                 break;
             case R.id.rl_back:
                 finish();
@@ -383,7 +388,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             if(requestCode ==4){
                 Uri uri = data.getData();
                 bitmap = BitmapCompress.decodeUriBitmap(mContext, uri);
-                img_file = BitmapCompress.compressImage(bitmap);
+                img_file = BitmapCompress.compressImage(bitmap,mContext);
                 getPath(img_file);
 
             }
@@ -702,6 +707,39 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         return false;
+    }
+
+    @SuppressLint("CheckResult")
+    private void requestPermissions() {
+        RxPermissions rxPermission = new RxPermissions(ChatActivity.this);
+        rxPermission.requestEach(
+                android.Manifest.permission.RECORD_AUDIO)//麦克风
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(com.tbruyelle.rxpermissions2.Permission permission) throws Exception {
+                        if (permission.granted) {
+                            // 用户已经同意该权限
+                            Logger.i("用户已经同意该权限", permission.name + " is granted.");
+                            if(type ==1) {
+                                rl_input.setVisibility(View.INVISIBLE);
+                                id_recorder_button.setVisibility(View.VISIBLE);
+                                type = 2;
+                            } else if(type ==2 ) {
+                                rl_input.setVisibility(View.VISIBLE);
+                                id_recorder_button.setVisibility(View.INVISIBLE);
+                                type = 1;
+                            }
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                            Logger.i("用户拒绝了该权限,没有选中『不再询问』", permission.name + " is denied. More info should be provided.");
+                        } else {
+                            // 用户拒绝了该权限，并且选中『不再询问』
+                            Logger.i("用户拒绝了该权限,并且选中『不再询问』", permission.name + " is denied.");
+                        }
+
+                    }
+                });
+
     }
 
 

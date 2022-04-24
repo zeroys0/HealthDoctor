@@ -26,6 +26,7 @@ import net.leelink.healthdoctor.adapter.PatientListAdapter;
 import net.leelink.healthdoctor.app.BaseActivity;
 import net.leelink.healthdoctor.bean.HistoryOrder;
 import net.leelink.healthdoctor.bean.PatientTeam;
+import net.leelink.healthdoctor.im.ChatActivity;
 import net.leelink.healthdoctor.util.Urls;
 import net.leelink.healthdoctor.view.CircleImageView;
 
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class PatientActivity extends BaseActivity implements View.OnClickListener {
-    RelativeLayout rl_back,rl_group;
+    RelativeLayout rl_back,rl_group,rl_chat;
     TextView text_title;
     Context context;
     private CircleImageView img_head;
@@ -44,7 +45,7 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
     List<HistoryOrder> list;
     CureHistoryAdapter cureHistoryAdapter;
     RecyclerView cure_history;
-    String elderlyId;
+    String elderlyId,clientId,name,head;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,8 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
         rl_group = findViewById(R.id.rl_group);
         rl_group.setOnClickListener(this);
         cure_history = findViewById(R.id.cure_history);
-
+        rl_chat = findViewById(R.id.rl_chat);
+        rl_chat.setOnClickListener(this);
 
     }
 
@@ -76,6 +78,8 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
         text_title.setText(patientBean.getElderlyName());
         Glide.with(context).load(Urls.getInstance().IMG_URL+patientBean.getHeadImgPath()).into(img_head);
         elderlyId=  patientBean.getElderlyId();
+        clientId = patientBean.getClientId();
+        head = patientBean.getHeadImgPath();
         tv_name.setText(patientBean.getElderlyName());
         if(patientBean.getSex()==1) {
             tv_sex.setText("女");
@@ -135,6 +139,14 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
                 Intent intent = new Intent(this,ChooseGroupActivity.class);
                 intent.putExtra("elderlyId",elderlyId);
                 startActivity(intent);
+                break;
+            case R.id.rl_chat:
+                Intent intent1= new Intent(this, ChatActivity.class);
+                intent1.putExtra("name",text_title.getText().toString());
+                intent1.putExtra("receive_head",head);
+                intent1.putExtra("clientId",clientId);
+                intent1.putExtra("state",1);
+                startActivity(intent1);
                 break;
         }
     }

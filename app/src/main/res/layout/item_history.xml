@@ -4,7 +4,8 @@
     android:layout_height="@dimen/y263"
     android:background="@drawable/bg_white_radius"
     android:layout_marginLeft="@dimen/x29"
-    android:layout_marginRight="@dimen/x29">
+    android:layout_marginRight="@dimen/x29"
+    android:layout_marginTop="@dimen/y30">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

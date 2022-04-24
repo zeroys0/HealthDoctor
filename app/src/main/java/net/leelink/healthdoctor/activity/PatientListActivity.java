@@ -112,7 +112,7 @@ public class PatientListActivity extends BaseActivity implements OnOrderListener
     @Override
     public void onItemClick(View view) {
         int position  = patient_list.getChildLayoutPosition(view);
-        Intent intent = new Intent(this,PatientActivity.class);
+        Intent intent = new Intent(this,PatientActivity2.class);
         intent.putExtra("patient",list.get(position));
         intent.putExtra("group",text_title.getText().toString());
         startActivity(intent);

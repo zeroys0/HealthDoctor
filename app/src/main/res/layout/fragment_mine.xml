@@ -310,6 +310,7 @@
                 android:textColor="@color/blue"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:id="@+id/tv_phone"
                 android:layout_marginRight="@dimen/x32"/>
         </RelativeLayout>
     </LinearLayout>

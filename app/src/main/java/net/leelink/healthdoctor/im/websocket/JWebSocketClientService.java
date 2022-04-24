@@ -26,8 +26,10 @@ import android.util.Log;
 import com.allenliu.versionchecklib.v2.builder.NotificationBuilder;
 
 import net.leelink.healthdoctor.R;
+import net.leelink.healthdoctor.activity.LoginActivity;
 import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.im.data.MessageDataHelper;
+import net.leelink.healthdoctor.im.data.MessageListHelper;
 import net.leelink.healthdoctor.im.modle.ChatMessage;
 import net.leelink.healthdoctor.im.util.Util;
 import net.leelink.healthdoctor.util.Urls;
@@ -40,6 +42,7 @@ import java.net.URI;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import cn.jpush.android.api.JPushInterface;
 
 import static android.app.Notification.VISIBILITY_PUBLIC;
 import static androidx.core.app.NotificationCompat.PRIORITY_MIN;
@@ -150,7 +153,8 @@ public class JWebSocketClientService extends Service {
         SharedPreferences sp = getSharedPreferences("sp",0);
         clientId = sp.getString("clientId","");
         String ws = sp.getString("ws","");
-        URI uri = URI.create(ws+clientId);
+        String token =  sp.getString("secretKey","");
+        URI uri = URI.create(ws+clientId+"/"+token);
         Log.e( "initSocketClient: ", ws+clientId);
         client = new JWebSocketClient(uri) {
             @Override
@@ -163,7 +167,9 @@ public class JWebSocketClientService extends Service {
                         if (jsonObject.getInt("messageType") == 4) {
                             String content = jsonObject.getString("textMessage");
                             MessageDataHelper messageDataHelper = new MessageDataHelper(getApplicationContext());
+                            MessageListHelper messageListHelper = new MessageListHelper(getApplicationContext());
                             SQLiteDatabase db= messageDataHelper.getReadableDatabase();
+                            SQLiteDatabase db_list = messageListHelper.getWritableDatabase();
                             ContentValues cv = new ContentValues();
                             cv.put("content",content);
                             cv.put("time",System.currentTimeMillis() + "");
@@ -175,7 +181,18 @@ public class JWebSocketClientService extends Service {
                             cv.put("RecorderTime",0);
                             db.insert("MessageDataBase",null,cv);
                             db.close();
+                            db_list.replace("MessageListDB",null,cv);
+                            db_list.close();
                         }
+                    }
+                    if(jsonObject.getInt("status")==400) {
+
+
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.putExtra("type",9);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

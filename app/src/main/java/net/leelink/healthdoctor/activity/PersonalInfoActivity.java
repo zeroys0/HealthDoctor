@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -57,7 +58,7 @@ import java.util.List;
 
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
     private RelativeLayout rl_back, rl_hospital, rl_subject;
-    private TextView tv_hospital, tv_subject,tv_professional;
+    private TextView tv_hospital, tv_subject, tv_professional;
     private Button btn_confirm;
     private ImageView img_head, id_card, id_card_back, img_tag, img_physician, img_diploma, img_title;
     private File head_file, card_file, card_back_file, tag_file, physician_file, diploma_file, title_file;
@@ -84,7 +85,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private final static int TITLE_ALBUM = 13;
     private final static int TITLE_PHOTO = 14;
     String cardBackPath, cardPositivePath, diplomaImgPath, physicianImgPath, tagImgPath, titleImgPath, imgPath;
-    private EditText ed_subject_phone,ed_skill,ed_name,ed_contact_name,ed_phone,ed_work_exp;
+    private EditText ed_subject_phone, ed_skill, ed_name, ed_contact_name, ed_phone, ed_work_exp;
 
     String hospitalId;
 
@@ -97,6 +98,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         createProgressBar(this);
         context = this;
         EventBus.getDefault().register(this);
+        initView();
+        requestPermissions();
     }
 
     public void init() {
@@ -134,6 +137,51 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         ed_work_exp = findViewById(R.id.ed_work_exp);
     }
 
+
+    public void initView() {
+        if (MyApplication.userInfo != null) {
+            ed_name.setText(MyApplication.userInfo.getName());
+            tv_hospital.setText(MyApplication.userInfo.getHospital());
+            tv_subject.setText(MyApplication.userInfo.getDepartment());
+            tv_professional.setText(MyApplication.userInfo.getDuties());
+            ed_subject_phone.setText(MyApplication.userInfo.getTelephone());
+            ed_phone.setText(MyApplication.userInfo.getTelephone());
+            ed_skill.setText(MyApplication.userInfo.getSkill());
+            ed_contact_name.setText(MyApplication.userInfo.getHonor());
+            ed_work_exp.setText(MyApplication.userInfo.getWorkHistory());
+            hospitalId = MyApplication.userInfo.getHospitalId();
+            if (MyApplication.userInfo.getImgPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getImgPath()).into(img_head);
+                imgPath = MyApplication.userInfo.getImgPath();
+            }
+            if (MyApplication.userInfo.getCardPositivePath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getCardPositivePath()).into(id_card);
+                cardPositivePath = MyApplication.userInfo.getCardPositivePath();
+            }
+            if (MyApplication.userInfo.getCardBackPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getCardBackPath()).into(id_card_back);
+                cardBackPath = MyApplication.userInfo.getCardBackPath();
+            }
+            if (MyApplication.userInfo.getTagImgPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getTagImgPath()).into(img_tag);
+                tagImgPath = MyApplication.userInfo.getTagImgPath();
+            }
+            if (MyApplication.userInfo.getPhysicianImgPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getPhysicianImgPath()).into(img_physician);
+                physicianImgPath = MyApplication.userInfo.getPhysicianImgPath();
+            }
+            if (MyApplication.userInfo.getDiplomaImgPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getDiplomaImgPath()).into(img_diploma);
+                diplomaImgPath = MyApplication.userInfo.getDiplomaImgPath();
+            }
+            if (MyApplication.userInfo.getTitleImgPath() != null) {
+                Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getTitleImgPath()).into(img_title);
+                titleImgPath = MyApplication.userInfo.getTitleImgPath();
+            }
+
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(HospitalBean hospitalBean) {
         tv_hospital.setText(hospitalBean.getName());
@@ -158,6 +206,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 submit();
                 break;
             case R.id.img_head:
+
                 showPopup(HEAD_ALBUM, HEAD_PHOTO);
                 backgroundAlpha(0.5f);
                 break;
@@ -204,112 +253,112 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     Uri uri = data.getData();
                     bitmap = BitmapCompress.decodeUriBitmap(context, uri);
                     img_head.setImageBitmap(bitmap);
-                    head_file = BitmapCompress.compressImage(bitmap);
-                    getPath(head_file,1);
+                    head_file = BitmapCompress.compressImage(bitmap,context);
+                    getPath(head_file, 1);
                     break;
                 case HEAD_PHOTO:
                     Bundle bundle = data.getExtras();
                     if (bundle != null) {
                         bitmap = (Bitmap) bundle.get("data");
                         img_head.setImageBitmap(bitmap);
-                        head_file = BitmapCompress.compressImage(bitmap);
-                        getPath(head_file,1);
+                        head_file = BitmapCompress.compressImage(bitmap,context);
+                        getPath(head_file, 1);
                     }
                     break;
                 case CARD_ALBUM:
                     Uri uri1 = data.getData();
                     card_bitmap = BitmapCompress.decodeUriBitmap(context, uri1);
                     id_card.setImageBitmap(card_bitmap);
-                    card_file = BitmapCompress.compressImage(card_bitmap);
-                    getPath(card_file,2);
+                    card_file = BitmapCompress.compressImage(card_bitmap,context);
+                    getPath(card_file, 2);
                     break;
                 case CARD_PHOTO:
                     Bundle bundle1 = data.getExtras();
                     if (bundle1 != null) {
                         card_bitmap = (Bitmap) bundle1.get("data");
                         id_card.setImageBitmap(card_bitmap);
-                        card_file = BitmapCompress.compressImage(card_bitmap);
-                        getPath(card_file,2);
+                        card_file = BitmapCompress.compressImage(card_bitmap,context);
+                        getPath(card_file, 2);
                     }
                     break;
                 case CARD_BACK_ALBUM:
                     Uri uri2 = data.getData();
                     card_back_bitmap = BitmapCompress.decodeUriBitmap(context, uri2);
                     id_card_back.setImageBitmap(card_back_bitmap);
-                    card_back_file = BitmapCompress.compressImage(card_back_bitmap);
-                    getPath(card_back_file,3);
+                    card_back_file = BitmapCompress.compressImage(card_back_bitmap,context);
+                    getPath(card_back_file, 3);
                     break;
                 case CARD_BACK_PHOTO:
                     Bundle bundle2 = data.getExtras();
                     if (bundle2 != null) {
                         card_back_bitmap = (Bitmap) bundle2.get("data");
                         id_card_back.setImageBitmap(card_back_bitmap);
-                        card_back_file = BitmapCompress.compressImage(card_back_bitmap);
-                        getPath(card_back_file,3);
+                        card_back_file = BitmapCompress.compressImage(card_back_bitmap,context);
+                        getPath(card_back_file, 3);
                     }
                     break;
                 case TAG_ALBUM:
                     Uri uri3 = data.getData();
                     tag_bitmap = BitmapCompress.decodeUriBitmap(context, uri3);
                     img_tag.setImageBitmap(tag_bitmap);
-                    tag_file = BitmapCompress.compressImage(tag_bitmap);
-                    getPath(tag_file,4);
+                    tag_file = BitmapCompress.compressImage(tag_bitmap,context);
+                    getPath(tag_file, 4);
                     break;
                 case TAG_PHOTO:
                     Bundle bundle3 = data.getExtras();
                     if (bundle3 != null) {
                         tag_bitmap = (Bitmap) bundle3.get("data");
                         img_tag.setImageBitmap(tag_bitmap);
-                        tag_file = BitmapCompress.compressImage(tag_bitmap);
-                        getPath(tag_file,4);
+                        tag_file = BitmapCompress.compressImage(tag_bitmap,context);
+                        getPath(tag_file, 4);
                     }
                     break;
                 case PHYSICIAN_ALBUM:
                     Uri uri4 = data.getData();
                     physician_bitmap = BitmapCompress.decodeUriBitmap(context, uri4);
                     img_physician.setImageBitmap(physician_bitmap);
-                    physician_file = BitmapCompress.compressImage(physician_bitmap);
-                    getPath(physician_file,5);
+                    physician_file = BitmapCompress.compressImage(physician_bitmap,context);
+                    getPath(physician_file, 5);
                     break;
                 case PHYSICIAN_PHOTO:
                     Bundle bundle4 = data.getExtras();
                     if (bundle4 != null) {
                         physician_bitmap = (Bitmap) bundle4.get("data");
                         img_physician.setImageBitmap(physician_bitmap);
-                        physician_file = BitmapCompress.compressImage(physician_bitmap);
-                        getPath(physician_file,5);
+                        physician_file = BitmapCompress.compressImage(physician_bitmap,context);
+                        getPath(physician_file, 5);
                     }
                     break;
                 case DIPLOMA_ALBUM:
                     Uri uri5 = data.getData();
                     diploma_bitmap = BitmapCompress.decodeUriBitmap(context, uri5);
                     img_diploma.setImageBitmap(diploma_bitmap);
-                    diploma_file = BitmapCompress.compressImage(diploma_bitmap);
-                    getPath(diploma_file,6);
+                    diploma_file = BitmapCompress.compressImage(diploma_bitmap,context);
+                    getPath(diploma_file, 6);
                     break;
                 case DIPLOMA_PHOTO:
                     Bundle bundle5 = data.getExtras();
                     if (bundle5 != null) {
                         diploma_bitmap = (Bitmap) bundle5.get("data");
                         img_diploma.setImageBitmap(diploma_bitmap);
-                        diploma_file = BitmapCompress.compressImage(diploma_bitmap);
-                        getPath(diploma_file,6);
+                        diploma_file = BitmapCompress.compressImage(diploma_bitmap,context);
+                        getPath(diploma_file, 6);
                     }
                     break;
                 case TITLE_ALBUM:
                     Uri uri6 = data.getData();
                     title_bitmap = BitmapCompress.decodeUriBitmap(context, uri6);
                     img_title.setImageBitmap(title_bitmap);
-                    title_file = BitmapCompress.compressImage(title_bitmap);
-                    getPath(title_file,7);
+                    title_file = BitmapCompress.compressImage(title_bitmap,context);
+                    getPath(title_file, 7);
                     break;
                 case TITLE_PHOTO:
                     Bundle bundle6 = data.getExtras();
                     if (bundle6 != null) {
                         title_bitmap = (Bitmap) bundle6.get("data");
                         img_title.setImageBitmap(title_bitmap);
-                        title_file = BitmapCompress.compressImage(title_bitmap);
-                        getPath(title_file,7);
+                        title_file = BitmapCompress.compressImage(title_bitmap,context);
+                        getPath(title_file, 7);
                     }
                     break;
                 default:
@@ -319,28 +368,32 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
     public void submit() {
+        if(imgPath ==null || diplomaImgPath==null || titleImgPath==null || tagImgPath==null || physicianImgPath==null || cardBackPath==null || cardPositivePath==null ) {
+            Toast.makeText(context, "请上传正确的图片信息", Toast.LENGTH_SHORT).show();
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("cardBackPath", cardBackPath);
-            jsonObject.put("cardPositivePath",cardPositivePath);
-            jsonObject.put("department",tv_subject.getText().toString().trim());
-            jsonObject.put("departmentPhone",ed_subject_phone.getText().toString().trim());
-            jsonObject.put("diplomaImgPath",diplomaImgPath);
-            jsonObject.put("expertise",ed_skill.getText().toString().trim());
-            jsonObject.put("hospitalId",hospitalId);
-            jsonObject.put("imgPath",imgPath);
-            jsonObject.put("physicianImgPath",physicianImgPath);
-            jsonObject.put("realName",ed_name.getText().toString().trim());
-            jsonObject.put("remark",ed_contact_name.getText().toString().trim());
-            jsonObject.put("tagImgPath",tagImgPath);
-            jsonObject.put("telephone",ed_phone.getText().toString().trim());
-            jsonObject.put("title",tv_professional.getText().toString().trim());
-            jsonObject.put("titleImgPath",titleImgPath);
-            jsonObject.put("workHistory",ed_work_exp.getText().toString().trim());
+            jsonObject.put("cardPositivePath", cardPositivePath);
+            jsonObject.put("department", tv_subject.getText().toString().trim());
+            jsonObject.put("departmentPhone", ed_subject_phone.getText().toString().trim());
+            jsonObject.put("diplomaImgPath", diplomaImgPath);
+            jsonObject.put("expertise", ed_skill.getText().toString().trim());
+            jsonObject.put("hospitalId", hospitalId);
+            jsonObject.put("imgPath", imgPath);
+            jsonObject.put("physicianImgPath", physicianImgPath);
+            jsonObject.put("realName", ed_name.getText().toString().trim());
+            jsonObject.put("remark", ed_contact_name.getText().toString().trim());
+            jsonObject.put("tagImgPath", tagImgPath);
+            jsonObject.put("telephone", ed_phone.getText().toString().trim());
+            jsonObject.put("title", tv_professional.getText().toString().trim());
+            jsonObject.put("titleImgPath", titleImgPath);
+            jsonObject.put("workHistory", ed_work_exp.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e( "submit: ",jsonObject.toString() );
+        Log.e("submit: ", jsonObject.toString());
 
         OkGo.<String>put(Urls.getInstance().REGIST)
                 .tag(this)
@@ -380,7 +433,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                             JSONObject json = new JSONObject(body);
                             Log.d("获取地址 ", json.toString());
                             if (json.getInt("status") == 200) {
-                                switch (type){
+                                switch (type) {
                                     case 1:
                                         imgPath = json.getString("data");
                                         break;

@@ -58,6 +58,7 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
     List<Integer> hour = new ArrayList<>();
     boolean first = false;
     private String time_id;
+    private boolean click = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,12 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
         tv_confirm = findViewById(R.id.tv_confirm);
         tv_confirm.setOnClickListener(this);
         rl_back = findViewById(R.id.rl_back);
-        rl_back.setOnClickListener(this);
+        rl_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         tv_1 = findViewById(R.id.tv_1);
         tv_2 = findViewById(R.id.tv_2);
         tv_3 = findViewById(R.id.tv_3);
@@ -179,13 +185,15 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if(!click) {
+            Toast.makeText(context, "请先选择日期", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (v.getId()) {
             case R.id.tv_confirm:
                 confirm();
                 break;
-            case R.id.rl_back:
-                finish();
-                break;
+
             case R.id.time_9:
                 if (time_9.isChecked()) {
                     setTime(9);
@@ -534,6 +542,7 @@ public class CureTimeActivity extends BaseActivity implements View.OnClickListen
         c_day = dates.get(position);
         hour.clear();
         setView(dates.get(position));
+        click = true;
     }
 
     @Override

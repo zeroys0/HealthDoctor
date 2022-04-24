@@ -4,7 +4,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import io.reactivex.functions.Consumer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.ComponentName;
@@ -32,23 +34,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allenliu.versionchecklib.v2.AllenVersionChecker;
+import com.allenliu.versionchecklib.v2.builder.UIData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.leelink.healthdoctor.activity.LoginActivity;
 import net.leelink.healthdoctor.app.BaseActivity;
 import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.bean.UserInfo;
+import net.leelink.healthdoctor.fragment.ChatListFragment;
 import net.leelink.healthdoctor.fragment.HomeFragment;
 import net.leelink.healthdoctor.fragment.MessageFragment;
 import net.leelink.healthdoctor.fragment.MineFragment;
 import net.leelink.healthdoctor.im.data.MessageDataHelper;
 import net.leelink.healthdoctor.im.websocket.JWebSocketClient;
 import net.leelink.healthdoctor.im.websocket.JWebSocketClientService;
+import net.leelink.healthdoctor.util.Logger;
 import net.leelink.healthdoctor.util.Urls;
 import net.leelink.healthdoctor.util.Utils;
 
@@ -64,6 +72,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     FragmentManager fm;
     HomeFragment homeFragment;
     MessageFragment messageFragment;
+    ChatListFragment chatListFragment;
+
     Context context;
     MineFragment mineFragment;
     private JWebSocketClient client;
@@ -76,9 +86,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         setContentView(R.layout.activity_main);
         init();
         context = this;
-        SharedPreferences sp = getSharedPreferences("sp",0);
-
+        checkVersion();
         startJWebSClientService();
+        requestPermissions();
         bindService();
         get_offLine_chat();
         checkNotification(context);
@@ -93,6 +103,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         nv_bottom.setBarBackgroundColor(R.color.white);
         nv_bottom
                 .addItem(new BottomNavigationItem(R.drawable.home_selected, "首页").setActiveColorResource(R.color.blue))
+                .addItem(new BottomNavigationItem(R.drawable.chat_selected, "消息").setActiveColorResource(R.color.blue))
                 .addItem(new BottomNavigationItem(R.drawable.message_selected, "患者").setActiveColorResource(R.color.blue))
                 .addItem(new BottomNavigationItem(R.drawable.mine_selected, "我的").setActiveColorResource(R.color.blue))
                 .setFirstSelectedPosition(0)
@@ -141,7 +152,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void get_offLine_chat(){
         SharedPreferences sp = getSharedPreferences("sp",0);
         MessageDataHelper messageDataHelper = new MessageDataHelper(this);
-        final SQLiteDatabase db = messageDataHelper.getReadableDatabase();
+        SQLiteDatabase db = messageDataHelper.getReadableDatabase();
         final String clientId = sp.getString("clientId","");
         Log.e( "get_offLine_chat: ",Urls.getInstance().HISTORY+"/"+clientId+"/0" );
         OkGo.<String>get(Urls.getInstance().HISTORY+"/"+clientId+"/0")
@@ -182,6 +193,66 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                         }
                     }
                 });
+    }
+
+    public void checkVersion() {
+        OkGo.<String>get(Urls.VERSION)
+                .tag(this)
+                .params("appName", "医家助手")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            String body = response.body();
+                            JSONObject json = new JSONObject(body);
+                            Log.d("获取版本信息", json.toString());
+                            if (json.getInt("status") == 200) {
+                                json = json.getJSONObject("data");
+                                if(Utils.getVersionCode(MainActivity.this)<json.getInt("version")) {
+                                    AllenVersionChecker
+                                            .getInstance()
+                                            .downloadOnly(
+                                                    UIData.create().setDownloadUrl(json.getString("apkUrl"))
+                                                            .setTitle("检测到新的版本")
+                                                            .setContent("检测到您当前不是最新版本,是否要更新?")
+                                            )
+                                            .executeMission(MainActivity.this);
+                                }
+                            } else {
+                                Toast.makeText(MainActivity.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+    }
+    @SuppressLint("CheckResult")
+    public boolean requestPermissions() {
+        RxPermissions rxPermission = new RxPermissions(MainActivity.this);
+        rxPermission.requestEach(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,//写外部存储器
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,//读取外部存储器
+                android.Manifest.permission.RECORD_AUDIO)//麦克风
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(com.tbruyelle.rxpermissions2.Permission permission) throws Exception {
+                        if (permission.granted) {
+                            // 用户已经同意该权限
+                            Logger.i("用户已经同意该权限", permission.name + " is granted.");
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                            Logger.i("用户拒绝了该权限,没有选中『不再询问』", permission.name + " is denied. More info should be provided.");
+                        } else {
+                            // 用户拒绝了该权限，并且选中『不再询问』
+                            Logger.i("用户拒绝了该权限,并且选中『不再询问』", permission.name + " is denied.");
+                        }
+
+                    }
+                });
+        return true;
     }
 
 
@@ -248,6 +319,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 ft.commit();
                 break;
             case 1:
+                if (chatListFragment == null) {
+                    ft.add(R.id.fragment_view, new ChatListFragment(), "chat");
+                } else {
+                    ft.show(chatListFragment);
+                }
+                Utils.setStatusTextColor(true, MainActivity.this);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+                if(chatListFragment!= null) {
+                    chatListFragment.onResume();
+                }
+                break;
+            case 2:
                 if (messageFragment == null) {
                     ft.add(R.id.fragment_view, new MessageFragment(), "device");
                 } else {
@@ -260,7 +344,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                     messageFragment.onResume();
                 }
                 break;
-            case 2:
+            case 3:
                 if (mineFragment == null) {
                     ft.add(R.id.fragment_view, new MineFragment(), "mine");
                 } else {
@@ -289,12 +373,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         // TODO Auto-generated method stub
         FragmentManager fm = getSupportFragmentManager();
         homeFragment = (HomeFragment) fm.findFragmentByTag("home");
+        chatListFragment = (ChatListFragment) fm.findFragmentByTag("chat");
         messageFragment = (MessageFragment) fm.findFragmentByTag("device");
         mineFragment = (MineFragment) fm.findFragmentByTag("mine");
         FragmentTransaction ft = fm.beginTransaction();
         /** 如果存在hide掉 */
         if (homeFragment != null)
             ft.hide(homeFragment);
+        if(chatListFragment !=null)
+            ft.hide(chatListFragment);
         if (messageFragment != null)
             ft.hide(messageFragment);
         if (mineFragment != null)

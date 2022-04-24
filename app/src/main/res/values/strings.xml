@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HealthDoctor</string>
+    <string name="app_name">医家助手</string>
 
     <array name="subject_type">
         <item>常见科室</item>

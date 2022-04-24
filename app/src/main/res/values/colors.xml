@@ -18,6 +18,7 @@
     <color name="text_orange">#FF8A00</color>
     <color name="hint_color">#808080</color>
     <color name="login_loginBtn_bgColor">#3685E3</color>
+    <color name="change_color">#3685E3</color>
     <color name="login_registerText">#0076ff</color>
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="login_border_bgColor">#0071DD</color>

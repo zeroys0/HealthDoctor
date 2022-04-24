@@ -14,6 +14,9 @@ import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.bean.SignBean;
 import net.leelink.healthdoctor.util.Urls;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -50,7 +53,14 @@ public class SignListAdapter extends RecyclerView.Adapter<SignListAdapter.ViewHo
         } else {
             holder.tv_sex.setText("女");
         }
-        holder.tv_address.setText("地址:"+list.get(position).getAddress());
+        String address = list.get(position).getAddress();
+        try {
+            JSONObject jsonObject = new JSONObject(address);
+            holder.tv_address.setText("地址:"+jsonObject.getString("fullAddress"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         holder.tv_time.setText("签约时间:"+list.get(position).getApplyTime()
         );
         if(type ==2){

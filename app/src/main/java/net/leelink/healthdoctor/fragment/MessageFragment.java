@@ -73,8 +73,11 @@ public class MessageFragment extends BaseFragment {
             examineFragment = (ExamineFragment) fm.findFragmentByTag("examine");
             if (examineFragment == null) {
                 examineFragment = new ExamineFragment();
+                ft.add(R.id.frame_layout, examineFragment, "examine");
+            } else {
+                ft.show(examineFragment);
             }
-            ft.add(R.id.frame_layout, examineFragment, "examine");
+
             ft.commit();
         } else if(state ==0) {
             if (verifyFragment == null) {

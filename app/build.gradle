@@ -7,8 +7,8 @@ android {
         applicationId "net.leelink.healthdoctor"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 7
+        versionName "1.06"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -29,6 +29,21 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    //编译java版本设置
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        //即使报错也不会停止打包
+        abortOnError false
     }
 }
 
@@ -67,6 +82,11 @@ dependencies {
     implementation 'cn.jiguang.sdk:jpush:3.1.6'// 此处以JPush 3.1.6 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.1.6'// 此处以JCore 1.2.5 版本为例。
 
+    //权限管理
+    implementation 'com.yanzhenjie:permission:2.0.0-rc2'
+
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'//权限
+
     //Websocket
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
 
@@ -79,4 +99,5 @@ dependencies {
     implementation 'com.lzy.net:okrx2:+'
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.lzy.net:okserver:+'
+    compile project(path: ':pattonutil')
 }

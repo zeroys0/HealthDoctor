@@ -510,15 +510,15 @@
                     android:layout_marginLeft="@dimen/x70"
                     android:text="医师头像"
                     android:textColor="@color/text_black" />
+
                 <ImageView
+                    android:id="@+id/img_head"
                     android:layout_width="@dimen/x146"
                     android:layout_height="@dimen/y146"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/img_add"
                     android:layout_marginRight="@dimen/x36"
-                    android:id="@+id/img_head"
-                    />
+                    android:src="@drawable/img_add" />
 
             </RelativeLayout>
 

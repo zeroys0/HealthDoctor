@@ -55,6 +55,9 @@ public class OrderAdapter  extends RecyclerView.Adapter<OrderAdapter.ViewHolder>
         if(list.get(position).getState()==3) {
             holder.tv_state.setText("接诊中");
         }
+        if(list.get(position).getState() ==4) {
+            holder.tv_state.setText("已结束");
+        }
         holder.tv_age.setText(list.get(position).getAge()+"岁");
         holder.tv_price.setText("￥"+list.get(position).getActPayPrice());
         holder.tv_content.setText(list.get(position).getRemark());

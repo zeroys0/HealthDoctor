@@ -177,7 +177,7 @@ public class CardListActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void delete(int position){
-        OkGo.<String>delete(Urls.getInstance().BIND_BANK)
+        OkGo.<String>delete(Urls.getInstance().BINK_BANK)
                 .tag(this)
                 .params("bankId",list.get(position).getId())
                 .execute(new StringCallback() {

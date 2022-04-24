@@ -56,16 +56,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/rl_bottom_btn"
         >
-            <Button
-                android:layout_width="@dimen/x495"
-                android:layout_height="@dimen/y132"
-                android:id="@+id/btn_refuse"
-                android:text="退诊"
-                android:background="@drawable/bg_blue_bg_stroke"
-                android:layout_marginLeft="@dimen/x32"
-                android:layout_marginBottom="@dimen/y36"
-                android:textColor="@color/blue"
-                />
+
+        <Button
+            android:id="@+id/btn_refuse"
+            android:layout_width="@dimen/x495"
+            android:layout_height="@dimen/y132"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_marginBottom="@dimen/y36"
+            android:background="@drawable/bg_blue_bg_stroke"
+            android:text="退诊"
+            android:textColor="@color/blue" />
         <Button
             android:layout_width="@dimen/x495"
             android:layout_height="@dimen/y132"

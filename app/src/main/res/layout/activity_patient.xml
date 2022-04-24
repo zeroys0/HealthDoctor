@@ -38,7 +38,21 @@
                 android:layout_marginTop="@dimen/y95"
                 android:src="@drawable/arrow_left_black" />
         </RelativeLayout>
-
+        <RelativeLayout
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y185"
+            android:layout_alignParentRight="true"
+            android:id="@+id/rl_chat"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y95"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/img_chat_patient"
+                android:id="@+id/ch"
+                />
+        </RelativeLayout>
 
     </RelativeLayout>
     <RelativeLayout

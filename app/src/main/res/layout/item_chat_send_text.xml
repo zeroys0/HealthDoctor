@@ -41,6 +41,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="7dp"
             android:text=""
+            android:visibility="gone"
             android:textSize="12sp" />
 
         <TextView

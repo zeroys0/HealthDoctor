@@ -30,7 +30,10 @@ import com.lzy.okgo.model.Response;
 import net.leelink.healthdoctor.MainActivity;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.activity.CureListActivity;
+import net.leelink.healthdoctor.activity.HomeCureActivity;
+import net.leelink.healthdoctor.activity.HospitalCureActivity;
 import net.leelink.healthdoctor.activity.PersonalInfoActivity;
+import net.leelink.healthdoctor.activity.PhoneListActivity;
 import net.leelink.healthdoctor.adapter.OnOrderListener;
 import net.leelink.healthdoctor.adapter.OrderAdapter;
 import net.leelink.healthdoctor.adapter.PatientAdapter;
@@ -53,7 +56,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeFragment  extends BaseFragment implements View.OnClickListener , OnOrderListener {
     RecyclerView quest_list;
     PatientAdapter patientAdapter;
-    RelativeLayout rl_personal_info,rl_talk_cure,rl_phone;
+    RelativeLayout rl_personal_info,rl_talk_cure,rl_phone,rl_home,rl_hospital;
     private ImageView img_head;
     private TextView tv_name,tv_professional,tv_subject,tv_hospital,tv_score,tv_count,tv_care_count;
     private int page = 1;
@@ -94,6 +97,10 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
         tv_score = view.findViewById(R.id.tv_score);
         tv_count = view.findViewById(R.id.tv_count);
         tv_care_count = view.findViewById(R.id.tv_care_count);
+        rl_home = view.findViewById(R.id.rl_home);
+        rl_home.setOnClickListener(this);
+        rl_hospital = view.findViewById(R.id.rl_hospital);
+        rl_hospital.setOnClickListener(this);
 
     }
     public void initData(){
@@ -139,17 +146,25 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.rl_personal_info:
-                Intent intent = new Intent(getContext(), PersonalInfoActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.rl_personal_info:
+//                Intent intent = new Intent(getContext(), PersonalInfoActivity.class);
+//                startActivity(intent);
+//                break;
             case R.id.rl_talk_cure:
                 Intent intent1 = new Intent(getContext(), CureListActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.rl_phone:
-                Intent intent2 = new Intent(getContext(), ChatActivity.class);
+                Intent intent2 = new Intent(getContext(), PhoneListActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.rl_home:
+                Intent intent3 = new Intent(getContext(), HomeCureActivity.class);
+                startActivity(intent3);
+                break;
+            case R.id.rl_hospital:
+                Intent intent4 = new Intent(getContext(), HospitalCureActivity.class);
+                startActivity(intent4);
                 break;
         }
     }

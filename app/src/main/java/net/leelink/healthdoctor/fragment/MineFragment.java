@@ -68,10 +68,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tv_hospital = view.findViewById(R.id.tv_hospital);
         rl_setting = view.findViewById(R.id.rl_setting);
         rl_setting.setOnClickListener(this);
+
     }
 
     public void initData(){
-        Glide.with(context).load(Urls.getInstance().IMG_URL+ MyApplication.userInfo.getImgPath()).into(img_head);
+        if(MyApplication.userInfo.getImgPath()!=null) {
+            Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getImgPath()).into(img_head);
+        }
         tv_name.setText(MyApplication.userInfo.getName());
         tv_professional.setText(MyApplication.userInfo.getDuties());
         tv_subject.setText(MyApplication.userInfo.getDepartment());

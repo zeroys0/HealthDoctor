@@ -26,6 +26,7 @@ import com.lzy.okgo.model.Response;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.adapter.ProvinceAdapter;
 import net.leelink.healthdoctor.app.BaseActivity;
+import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.bean.ProvinceBean;
 import net.leelink.healthdoctor.util.Urls;
 
@@ -40,7 +41,6 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
     AppCompatCheckBox cb_picture,cb_phone,cb_home,cb_hospital;
     public static int PICTURE = 3;
     public static int PHONE = 5;
-    public static int COUNT = 7;
     private TextView tv_price,tv_phone_price,tv_count;
     Context context;
     @Override
@@ -90,9 +90,11 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
         rl_phone_price.setOnClickListener(this);
         tv_phone_price = findViewById(R.id.tv_phone_price);
         tv_phone_price.setOnClickListener(this);
+        tv_phone_price.setText(MyApplication.userInfo.getPhonePrice());
         tv_price = findViewById(R.id.tv_price);
-        rl_count = findViewById(R.id.rl_count);
-        rl_count.setOnClickListener(this);
+        tv_price.setText(MyApplication.userInfo.getImgPrice());
+//        rl_count = findViewById(R.id.rl_count);
+//        rl_count.setOnClickListener(this);
         tv_count = findViewById(R.id.tv_count);
         rl_time = findViewById(R.id.rl_time);
         rl_time.setOnClickListener(this);
@@ -213,10 +215,10 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
                 Intent intent1 = new Intent(this,PriceActivity.class);
                 startActivityForResult(intent1,PHONE);
                 break;
-            case R.id.rl_count:
-                Intent intent2 = new Intent(this,CureCountActivity.class);
-                startActivityForResult(intent2,COUNT);
-                break;
+//            case R.id.rl_count:
+//                Intent intent2 = new Intent(this,CureCountActivity.class);
+//                startActivityForResult(intent2,COUNT);
+//                break;
             case R.id.rl_time:
                 Intent intent3 = new Intent(this,CureTimeActivity.class);
                 intent3.putExtra("type",1);
@@ -238,15 +240,20 @@ public class CureSettingActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == PICTURE) {
-            tv_price.setText( data.getStringExtra("price"));
-            setPrice(PICTURE);
-        } else if(resultCode == 3 && requestCode == PHONE) {
-            tv_phone_price.setText(data.getStringExtra("price"));
-            setPrice(PHONE);
-        } else if(resultCode ==5 && requestCode == COUNT ) {
-            tv_count.setText(data.getStringExtra("count"));
+        if(data!=null) {
+            if (requestCode == PICTURE) {
+                tv_price.setText(data.getStringExtra("price"));
+                MyApplication.userInfo.setImgPrice(data.getStringExtra("price"));
+                setPrice(PICTURE);
+            } else if (requestCode == PHONE) {
+                tv_phone_price.setText(data.getStringExtra("price"));
+                MyApplication.userInfo.setPhonePrice(data.getStringExtra("price"));
+                setPrice(PHONE);
+            }
         }
+//        } else if(resultCode ==5 && requestCode == COUNT ) {
+//            tv_count.setText(data.getStringExtra("count"));
+//        }
     }
 
     public void setPrice(int type){

@@ -99,5 +99,12 @@
         <!--/背景是否模糊显示-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+    <declare-styleable name="MaxHeightRecyclerView">
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
 
+    <style name="My_CheckBox" parent="@android:style/Widget.Material.CompoundButton.CheckBox">
+        <item name="android:colorControlActivated">@color/text_grey</item>
+        <item name="android:colorControlNormal">@color/grey</item>
+    </style>
 </resources>

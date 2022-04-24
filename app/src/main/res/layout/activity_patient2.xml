@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context=".activity.PatientActivity2">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y185"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y80"
+            android:layout_marginBottom="@dimen/y44"
+            android:src="@drawable/img_app_name"
+            android:text=""
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x45" />
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y185">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x45"
+                android:layout_marginTop="@dimen/y95"
+                android:src="@drawable/arrow_left_black" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y444"
+        android:layout_marginLeft="@dimen/x35"
+        android:layout_marginTop="@dimen/y35"
+        android:layout_marginRight="@dimen/x35"
+        android:background="@drawable/bg_white_radius">
+
+        <net.leelink.healthdoctor.view.CircleImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y250"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@drawable/default_head" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginTop="@dimen/y135"
+            android:layout_toRightOf="@+id/img_head"
+            android:text="李富贵"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x49" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginTop="@dimen/y228"
+            android:layout_toRightOf="@+id/img_head"
+            android:text="男"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x40" />
+
+        <TextView
+            android:id="@+id/tv_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginTop="@dimen/y228"
+            android:layout_toRightOf="@+id/tv_sex"
+            android:text="33"
+            android:textColor="@color/text_black"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginBottom="@dimen/y100"
+            android:layout_toRightOf="@+id/img_head"
+            android:text=""
+            android:textColor="@color/text_grey"
+            android:textSize="@dimen/x36" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x26"
+            android:src="@drawable/arrow_right_black" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/x35"
+        android:layout_marginTop="@dimen/y33"
+        android:layout_marginRight="@dimen/x35"
+        android:layout_marginBottom="@dimen/y100"
+        android:background="@drawable/bg_white_radius"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y100">
+
+            <RelativeLayout
+                android:id="@+id/rl_chat"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_chat" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_chat"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="发消息"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_data"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_data"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="数据收集"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_abnormal"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_abnormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_abnormal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_abnormal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="异常数据"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y100">
+
+            <RelativeLayout
+                android:id="@+id/rl_cure_history"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_cure_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_cure_history" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_cure_history"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="问诊记录"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_group"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_team" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_comment"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="分组"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_check_data"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_check_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_check_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_check_data"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="体检数据"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y100">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_health_data"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img_health_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_health_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_health_data"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="健康数据"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_health_report"
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/img_health_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_health_report" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_health_report"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
+                    android:text="健康报告"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/x39" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+
+                android:layout_width="0px"
+                android:layout_height="@dimen/y135"
+                android:layout_weight="1">
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
