@@ -54,4 +54,6 @@
     <string name="str_recorder_normal">按住说话</string>
     <string name="str_recorder_recording">松开结束</string>
     <string name="str_recorder_want_cancel">松开手指，取消发送</string>
+    <string name="logout">注销医家助手帐号后，您将无法恢复个人信息、订单信息以及相关记录。无法登录医家助手app。请您确认是否注销。</string>
+    <string name="agreement">请你务必审慎阅读,充分理解"服务协议及隐私政策"条款.包含但不限于:为了提供健康服务.我们需要收集你的设备信息,操作日志等个人信息.你可以在设置中查看,变更,删除个人信息并管理授权.你可阅读《用户协议》及《隐私政策》了解详细信息.如你同意,请点击"同意"开始接受我们的服务.</string>
 </resources>

@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.allenliu.versionchecklib.v2.builder.NotificationBuilder;
@@ -185,12 +186,10 @@ public class JWebSocketClientService extends Service {
                             db_list.close();
                         }
                     }
-                    if(jsonObject.getInt("status")==400) {
-
+                    else if(jsonObject.getInt("status")==400) {
 
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.putExtra("type",9);
-
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
@@ -312,7 +311,7 @@ public class JWebSocketClientService extends Service {
                     // 设置该通知优先级
                     .setPriority(Notification.PRIORITY_MAX)
                     .setSmallIcon(R.drawable.icon)
-                    .setContentTitle("服务器")
+                    .setContentTitle("老人")
                     .setContentText(content)
                     .setVisibility(VISIBILITY_PUBLIC)
                     .setWhen(System.currentTimeMillis())
@@ -329,7 +328,7 @@ public class JWebSocketClientService extends Service {
                     // 设置该通知优先级
                     .setPriority(Notification.PRIORITY_MAX)
                     .setSmallIcon(R.drawable.icon)
-                    .setContentTitle("服务器")
+                    .setContentTitle("老人")
                     .setContentText(content)
                     .setVisibility(VISIBILITY_PUBLIC)
                     .setWhen(System.currentTimeMillis())

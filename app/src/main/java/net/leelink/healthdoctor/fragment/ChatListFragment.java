@@ -131,7 +131,7 @@ public class ChatListFragment extends BaseFragment implements OnOrderListener {
     private void doRegisterReceiver() {
         chatMessageReceiver = new ChatMessageReceiver();
         IntentFilter filter = new IntentFilter("com.xch.servicecallback.content");
-        registerReceiver(chatMessageReceiver, filter);
+        context.registerReceiver(chatMessageReceiver, filter);
     }
 
     @Override
@@ -152,11 +152,15 @@ public class ChatListFragment extends BaseFragment implements OnOrderListener {
                             Log.d("消息", json.toString());
                             if (json.getInt("status") == 200) {
                                 JSONArray jsonArray = json.getJSONArray("data");
-                                String img_head = jsonArray.getJSONObject(0).getString("img_path");
                                 Intent intent = new Intent(context, ChatActivity.class);
                                 intent.putExtra("clientId",clientId);
-                                intent.putExtra("receive_head",img_head);
-                                intent.putExtra("name",jsonArray.getJSONObject(0).getString("userName"));
+                                String img_head = "";
+                                try {
+                                    img_head = jsonArray.getJSONObject(0).getString("img_path");
+                                    intent.putExtra("name",jsonArray.getJSONObject(0).getString("userName"));
+                                } catch (Exception e){
+                                    intent.putExtra("receive_head",img_head);
+                                }
                                 intent.putExtra("state",1);
                                 startActivity(intent);
                             } else if (json.getInt("status") == 505) {

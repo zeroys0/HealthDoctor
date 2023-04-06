@@ -7,8 +7,8 @@ android {
         applicationId "net.leelink.healthdoctor"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.06"
+        versionCode 9
+        versionName "1.08"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -67,7 +67,6 @@ dependencies {
     implementation 'com.yanzhenjie.recyclerview:support:1.3.0'
     //高德地图
     implementation 'com.amap.api:3dmap:latest.integration'
-    implementation 'com.amap.api:location:latest.integration'
     implementation 'com.amap.api:search:latest.integration'
 
     implementation 'com.just.agentweb:agentweb:4.0.2'
@@ -79,8 +78,12 @@ dependencies {
 
 
     //推送
-    implementation 'cn.jiguang.sdk:jpush:3.1.6'// 此处以JPush 3.1.6 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:2.1.6'// 此处以JCore 1.2.5 版本为例。
+    // 此处以JCore 3.3.2 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:3.3.2'
+    // 此处以JPush 4.8.1 版本为例
+    implementation 'cn.jiguang.sdk:jpush:4.8.1'
+//    implementation 'cn.jiguang.sdk:jpush:3.1.6'// 此处以JPush 3.1.6 版本为例。
+//    implementation 'cn.jiguang.sdk:jcore:2.1.6'// 此处以JCore 1.2.5 版本为例。
 
     //权限管理
     implementation 'com.yanzhenjie:permission:2.0.0-rc2'

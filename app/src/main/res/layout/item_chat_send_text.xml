@@ -41,8 +41,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="7dp"
             android:text=""
-            android:visibility="gone"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_content"
@@ -57,15 +57,20 @@
             android:textColorLink="#157BFB"
             android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/img_picture"
-            android:layout_width="225dp"
-            android:layout_height="225dp"
-            android:layout_marginRight="3dp"
-            android:background="@color/white"
-            android:maxWidth="225dp"
-            android:maxHeight="225dp"
-            android:visibility="gone"/>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_picture"
+                android:layout_width="225dp"
+                android:layout_height="225dp"
+                android:layout_marginRight="3dp"
+                android:background="@color/white"
+                android:maxWidth="225dp"
+                android:maxHeight="225dp"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/ll_push"
@@ -135,36 +140,34 @@
                 android:textSize="10sp" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/id_recorder_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/id_recorder_length"
-            android:layout_marginRight="3dp"
-            android:textColor="#ff777777"
             android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/id_recorder_length"
             android:text=""
-            />
+            android:textColor="#ff777777" />
+
         <LinearLayout
             android:id="@+id/id_recorder_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:orientation="vertical"
             android:background="@drawable/jmui_msg_send_bg"
-            android:visibility="gone"
-            >
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/id_recorder_anim"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical|right"
-                android:background="@drawable/adj"
-                />
+                android:background="@drawable/adj" />
 
         </LinearLayout>
-
 
 
         <ImageView

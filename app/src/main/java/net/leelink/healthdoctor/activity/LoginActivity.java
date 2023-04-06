@@ -122,7 +122,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             public void onClick(View widget) {
                 Intent intent = new Intent(LoginActivity.this, WebActivity.class);
                 intent.putExtra("type", "distribution");
-                intent.putExtra("url", "http://www.llky.net.cn/doctor/protocol.html");
+                intent.putExtra("url", "https://www.llky.net.cn/doctor/protocol.html");
                 startActivity(intent);
             }
 
@@ -138,7 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 Intent intent = new Intent(LoginActivity.this, WebActivity.class);
                 intent.putExtra("type", "distribution");
-                intent.putExtra("url", "http://www.llky.net.cn/doctor/privacyPolicy.html");
+                intent.putExtra("url", "https://www.llky.net.cn/doctor/privacyPolicy.html");
                 startActivity(intent);
             }
 
@@ -264,15 +264,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                 SharedPreferences sp = getSharedPreferences("sp", 0);
                                 SharedPreferences.Editor editor = sp.edit();
                                 json = json.getJSONObject("data");
-                                editor.putString("secretKey", json.getString("token"));
-                                editor.putString("clientId", json.getString("clientId"));
-                                saveUsername(ed_telephone.getText().toString().trim());
-                                MyApplication.token = json.getString("token");
-                                editor.putString("telephone", ed_telephone.getText().toString().trim());
-                                editor.apply();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                int state = json.getInt("state");
+                                if(state==0 || state == 5){ //判断医生是否注册
+                                    Intent intent = new Intent(LoginActivity.this,PersonalInfoActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    editor.putString("secretKey", json.getString("token"));
+                                    editor.putString("clientId", json.getString("clientId"));
+                                    saveUsername(ed_telephone.getText().toString().trim());
+                                    MyApplication.token = json.getString("token");
+                                    editor.putString("telephone", ed_telephone.getText().toString().trim());
+                                    editor.apply();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else {
                                 Toast.makeText(LoginActivity.this, json.getString("message"), Toast.LENGTH_LONG).show();
                             }
@@ -455,6 +461,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                     editor.putString("c_ip", json.getString("clientInfoUrl"));
                                     Urls.IP = json.getString("apiUrl");
                                     Urls.H5_IP = json.getString("h5Url");
+                                    Urls.C_IP = json.getString("clientInfoUrl");
                                     editor.putString("code", code);
                                     Toast.makeText(LoginActivity.this, "切换商户成功", Toast.LENGTH_SHORT).show();
                                     editor.apply();

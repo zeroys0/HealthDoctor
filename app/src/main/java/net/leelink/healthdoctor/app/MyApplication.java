@@ -47,19 +47,6 @@ public class MyApplication extends Application {
 
         instance = this;
 
-        initokGO();
-        initJPush();
-//        Glide.init(this,);
-        initImagePicker();
-//        NineGridView.setImageLoader(new PicassoImageLoader());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-        }
-        ZXingLibrary.initDisplayOpinion(this);
-
-        mClient = new BluetoothClient(this);
-        initIm();
     }
 
     public void initImagePicker() {
@@ -130,6 +117,28 @@ public class MyApplication extends Application {
     public void initJPush() {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+    }
+
+    public void initSdk(){
+        initokGO();
+        initJPush();
+        initImagePicker();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+        ZXingLibrary.initDisplayOpinion(this);
+
+        mClient = new BluetoothClient(this);
+        initIm();
+    }
+
+    // 遍历所有Activity并finish
+    public void exit() {
+        for (Activity activity : activityList) {
+            activity.finish();
+        }
+        System.exit(0);
     }
 
 }

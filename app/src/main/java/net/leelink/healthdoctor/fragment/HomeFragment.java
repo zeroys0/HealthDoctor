@@ -215,7 +215,7 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
         intent.putExtra("clientId",list.get(position).getClientId());
         intent.putExtra("receive_head",list.get(position).getHeadImg());
         intent.putExtra("remark",list.get(position).getRemark());
-        intent.putExtra("state",0);
+        intent.putExtra("state",list.get(position).getState());
         intent.putExtra("orderId",list.get(position).getOrderId());
         startActivity(intent);
     }

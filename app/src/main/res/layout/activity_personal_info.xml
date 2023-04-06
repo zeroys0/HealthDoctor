@@ -56,6 +56,158 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x31"
                 android:layout_marginTop="@dimen/y37"
+                android:text="医院科室"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/x44"
+
+                />
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@drawable/bg_white_radius"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_hospital"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y140"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="*"
+                    android:textColor="@color/red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x70"
+                    android:text="所在医院"
+                    android:textColor="@color/text_black" />
+
+
+                <TextView
+                    android:id="@+id/tv_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text=""
+                    android:textColor="@color/text_grey" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginRight="@dimen/x36"
+                    android:background="@color/bg" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_subject"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y140">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="*"
+                    android:textColor="@color/red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x70"
+                    android:text="所属科室"
+                    android:textColor="@color/text_black" />
+
+                <TextView
+                    android:id="@+id/tv_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:background="@null"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="@dimen/x42" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginRight="@dimen/x36"
+                    android:background="@color/bg" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y140">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="*"
+                    android:textColor="@color/red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x70"
+                    android:text="科室电话"
+                    android:textColor="@color/text_black" />
+
+                <EditText
+                    android:id="@+id/ed_subject_phone"
+                    android:layout_width="@dimen/x600"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="1dp"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="@dimen/x30"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="@dimen/x42" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginRight="@dimen/x36"
+                    android:background="@color/bg" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x31"
+                android:layout_marginTop="@dimen/y37"
                 android:text="个人资料"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/x44"
@@ -115,53 +267,7 @@
                         android:background="@color/bg" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
-                    android:id="@+id/rl_hospital"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y140"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:text="*"
-                        android:textColor="@color/red" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x70"
-                        android:text="就职医院"
-                        android:textColor="@color/text_black" />
-
-
-                    <TextView
-                        android:id="@+id/tv_hospital"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:text="总医院"
-                        android:textColor="@color/text_grey" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/y1"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:layout_marginRight="@dimen/x36"
-                        android:background="@color/bg" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_subject"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y140">
 
@@ -178,18 +284,19 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x70"
-                        android:text="所属科室"
+                        android:text="证件号码"
                         android:textColor="@color/text_black" />
 
-                    <TextView
-                        android:id="@+id/tv_subject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <EditText
+                        android:id="@+id/ed_id"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
+                        android:layout_marginRight="1dp"
                         android:background="@null"
-                        android:text=""
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+
                         android:textColor="#999999"
                         android:textSize="@dimen/x42" />
 
@@ -203,6 +310,8 @@
                         android:background="@color/bg" />
 
                 </RelativeLayout>
+
+
 
                 <RelativeLayout
                     android:id="@+id/rl_nation"
@@ -259,95 +368,7 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y140">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:text="*"
-                        android:textColor="@color/red" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x70"
-                        android:text="科室电话"
-                        android:textColor="@color/text_black" />
-
-                    <EditText
-                        android:id="@+id/ed_subject_phone"
-                        android:layout_width="@dimen/x600"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="1dp"
-                        android:background="@null"
-                        android:gravity="center_vertical|right"
-                        android:paddingRight="@dimen/x30"
-                        android:text=""
-                        android:textColor="#999999"
-                        android:textSize="@dimen/x42" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/y1"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:layout_marginRight="@dimen/x36"
-                        android:background="@color/bg" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y140">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:text="*"
-                        android:textColor="@color/red" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x70"
-                        android:text="联系电话"
-                        android:textColor="@color/text_black" />
-
-                    <EditText
-                        android:id="@+id/ed_phone"
-                        android:layout_width="@dimen/x600"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="1dp"
-                        android:background="@null"
-                        android:gravity="center_vertical|right"
-                        android:paddingRight="@dimen/x30"
-                        android:text=""
-                        android:textColor="#999999"
-                        android:textSize="@dimen/x42" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/y1"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:layout_marginRight="@dimen/x36"
-                        android:background="@color/bg" />
-
-
-                </RelativeLayout>
             </LinearLayout>
 
 

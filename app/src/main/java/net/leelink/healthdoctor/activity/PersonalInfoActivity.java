@@ -85,7 +85,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private final static int TITLE_ALBUM = 13;
     private final static int TITLE_PHOTO = 14;
     String cardBackPath, cardPositivePath, diplomaImgPath, physicianImgPath, tagImgPath, titleImgPath, imgPath;
-    private EditText ed_subject_phone, ed_skill, ed_name, ed_contact_name, ed_phone, ed_work_exp;
+    private EditText ed_subject_phone, ed_skill, ed_name, ed_contact_name, ed_work_exp,ed_id;
 
     String hospitalId;
 
@@ -131,10 +131,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         ed_skill = findViewById(R.id.ed_skill);
         ed_name = findViewById(R.id.ed_name);
         ed_contact_name = findViewById(R.id.ed_contact_name);
-        ed_phone = findViewById(R.id.ed_phone);
         tv_professional = findViewById(R.id.tv_professional);
         tv_professional.setOnClickListener(this);
         ed_work_exp = findViewById(R.id.ed_work_exp);
+        ed_id = findViewById(R.id.ed_id);
     }
 
 
@@ -145,36 +145,35 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             tv_subject.setText(MyApplication.userInfo.getDepartment());
             tv_professional.setText(MyApplication.userInfo.getDuties());
             ed_subject_phone.setText(MyApplication.userInfo.getTelephone());
-            ed_phone.setText(MyApplication.userInfo.getTelephone());
             ed_skill.setText(MyApplication.userInfo.getSkill());
             ed_contact_name.setText(MyApplication.userInfo.getHonor());
             ed_work_exp.setText(MyApplication.userInfo.getWorkHistory());
             hospitalId = MyApplication.userInfo.getHospitalId();
-            if (MyApplication.userInfo.getImgPath() != null) {
+            if (MyApplication.userInfo.getImgPath() != null && !MyApplication.userInfo.getImgPath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getImgPath()).into(img_head);
                 imgPath = MyApplication.userInfo.getImgPath();
             }
-            if (MyApplication.userInfo.getCardPositivePath() != null) {
+            if (MyApplication.userInfo.getCardPositivePath() != null && !MyApplication.userInfo.getCardPositivePath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getCardPositivePath()).into(id_card);
                 cardPositivePath = MyApplication.userInfo.getCardPositivePath();
             }
-            if (MyApplication.userInfo.getCardBackPath() != null) {
+            if (MyApplication.userInfo.getCardBackPath() != null && !MyApplication.userInfo.getCardBackPath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getCardBackPath()).into(id_card_back);
                 cardBackPath = MyApplication.userInfo.getCardBackPath();
             }
-            if (MyApplication.userInfo.getTagImgPath() != null) {
+            if (MyApplication.userInfo.getTagImgPath() != null && !MyApplication.userInfo.getTagImgPath().equals("")){
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getTagImgPath()).into(img_tag);
                 tagImgPath = MyApplication.userInfo.getTagImgPath();
             }
-            if (MyApplication.userInfo.getPhysicianImgPath() != null) {
+            if (MyApplication.userInfo.getPhysicianImgPath() != null && !MyApplication.userInfo.getPhysicianImgPath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getPhysicianImgPath()).into(img_physician);
                 physicianImgPath = MyApplication.userInfo.getPhysicianImgPath();
             }
-            if (MyApplication.userInfo.getDiplomaImgPath() != null) {
+            if (MyApplication.userInfo.getDiplomaImgPath() != null && !MyApplication.userInfo.getDiplomaImgPath().equals("") ) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getDiplomaImgPath()).into(img_diploma);
                 diplomaImgPath = MyApplication.userInfo.getDiplomaImgPath();
             }
-            if (MyApplication.userInfo.getTitleImgPath() != null) {
+            if (MyApplication.userInfo.getTitleImgPath() != null && !MyApplication.userInfo.getTitleImgPath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getTitleImgPath()).into(img_title);
                 titleImgPath = MyApplication.userInfo.getTitleImgPath();
             }
@@ -377,16 +376,15 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             jsonObject.put("cardBackPath", cardBackPath);
             jsonObject.put("cardPositivePath", cardPositivePath);
             jsonObject.put("department", tv_subject.getText().toString().trim());
-            jsonObject.put("departmentPhone", ed_subject_phone.getText().toString().trim());
+            jsonObject.put("telephone", ed_subject_phone.getText().toString().trim());
             jsonObject.put("diplomaImgPath", diplomaImgPath);
-            jsonObject.put("expertise", ed_skill.getText().toString().trim());
+            jsonObject.put("skill", ed_skill.getText().toString().trim());
             jsonObject.put("hospitalId", hospitalId);
             jsonObject.put("imgPath", imgPath);
             jsonObject.put("physicianImgPath", physicianImgPath);
-            jsonObject.put("realName", ed_name.getText().toString().trim());
-            jsonObject.put("remark", ed_contact_name.getText().toString().trim());
+            jsonObject.put("name", ed_name.getText().toString().trim());
+            jsonObject.put("honor", ed_contact_name.getText().toString().trim());
             jsonObject.put("tagImgPath", tagImgPath);
-            jsonObject.put("telephone", ed_phone.getText().toString().trim());
             jsonObject.put("title", tv_professional.getText().toString().trim());
             jsonObject.put("titleImgPath", titleImgPath);
             jsonObject.put("workHistory", ed_work_exp.getText().toString().trim());

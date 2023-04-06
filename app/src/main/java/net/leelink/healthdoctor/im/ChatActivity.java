@@ -52,6 +52,7 @@ import net.leelink.healthdoctor.MainActivity;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.app.MyApplication;
 import net.leelink.healthdoctor.im.adapter.Adapter_ChatMessage;
+import net.leelink.healthdoctor.im.adapter.ChatMessageAdapter;
 import net.leelink.healthdoctor.im.data.MessageDataHelper;
 import net.leelink.healthdoctor.im.data.MessageListHelper;
 import net.leelink.healthdoctor.im.modle.ChatMessage;
@@ -78,6 +79,8 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.functions.Consumer;
 
 
@@ -87,7 +90,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private JWebSocketClientService.JWebSocketClientBinder binder;
     private JWebSocketClientService jWebSClientService;
     private EditText et_content;
-    private ListView listView;
+    private RecyclerView listView;
     private Button btn_send,btn_refuse,btn_confirm;
     private ImageView btn_multimedia,btn_voice_or_text;
     private List<ChatMessage> chatMessageList = new ArrayList<>();//消息列表
@@ -104,6 +107,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     MessageListHelper messageListHelper;
     String clientId;
     private TextView text_title;
+    ChatMessageAdapter chatMessageAdapter;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -142,6 +146,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                         chatMessageList.add(chatMessage);
                         initChatMsgListView();
                     }
+                }else if(jsonObject.getInt("status")==201){
+                    Toast.makeText(getApplicationContext(), "您的次数已达限制!", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -152,6 +158,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_chat);
         mContext = ChatActivity.this;
         SharedPreferences sp = getSharedPreferences("sp",0);
@@ -250,7 +257,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 if (et_content.getText().toString().length() > 0) {
                     btn_send.setVisibility(View.VISIBLE);
                 } else {
-                    btn_send.setVisibility(View.GONE);
+//                    btn_send.setVisibility(View.GONE);
                 }
             }
 
@@ -289,22 +296,29 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }
         db.close();
         c.close();
-        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
-        listView.setAdapter(adapter_chatMessage);
-        listView.setSelection(chatMessageList.size());
+//        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
+//
+//        listView.setAdapter(adapter_chatMessage);
+//        listView.setSelection(chatMessageList.size());
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //播放音频  完成后改回原来的background
+//                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mp) {
+//
+//                    }
+//                });
+//            }
+//        });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //播放音频  完成后改回原来的background
-                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-
-                    }
-                });
-            }
-        });
+        chatMessageAdapter = new ChatMessageAdapter(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
+        listView.setAdapter(chatMessageAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        listView.setLayoutManager(layoutManager);
+        listView.scrollToPosition(chatMessageList.size()-1);
     }
 
     @Override
@@ -350,10 +364,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     chatMessage.setTime(System.currentTimeMillis() + "");
                     chatMessage.setType(1);
                     chatMessageList.add(chatMessage);
+//                    chatMessageAdapter.notifyDataSetChanged();
                     initChatMsgListView();
                     et_content.setText("");
                     db.close();
                     db_list.close();
+
                 } else {
                     Util.showToast(mContext, "连接已断开，请稍等或重启App哟");
                 }
@@ -396,22 +412,28 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initChatMsgListView() {
-        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
-        listView.setAdapter(adapter_chatMessage);
-        listView.setSelection(chatMessageList.size());
+//        adapter_chatMessage = new Adapter_ChatMessage(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
+//        listView.setAdapter(adapter_chatMessage);
+//        listView.setSelection(chatMessageList.size());
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //播放音频  完成后改回原来的background
+//                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mp) {
+//
+//                    }
+//                });
+//            }
+//        });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //播放音频  完成后改回原来的background
-                MediaManager.playSound(Urls.getInstance().IMG_URL+chatMessageList.get(position).getContent(), new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-
-                    }
-                });
-            }
-        });
+        chatMessageAdapter = new ChatMessageAdapter(mContext, chatMessageList,MyApplication.userInfo.getImgPath(),getIntent().getStringExtra("receive_head"));
+        listView.setAdapter(chatMessageAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        listView.setLayoutManager(layoutManager);
+        listView.scrollToPosition(chatMessageList.size()-1);
     }
 
     /**

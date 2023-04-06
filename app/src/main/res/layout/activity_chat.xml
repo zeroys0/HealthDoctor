@@ -43,7 +43,14 @@
 
     </RelativeLayout>
 
-    <ListView
+<!--    <ListView-->
+<!--        android:id="@+id/chatmsg_listView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:divider="@null"-->
+<!--        android:background="@color/bg"/>-->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatmsg_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -66,16 +73,16 @@
             android:background="@drawable/bg_blue_bg_stroke"
             android:text="退诊"
             android:textColor="@color/blue" />
+
         <Button
+            android:id="@+id/btn_confirm"
             android:layout_width="@dimen/x495"
             android:layout_height="@dimen/y132"
-            android:id="@+id/btn_confirm"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/x32"
-            android:text="接诊"
-            android:textColor="@color/white"
             android:background="@drawable/btn_enter"
-            />
+            android:text="接诊"
+            android:textColor="@color/white" />
     </RelativeLayout>
     <include layout="@layout/view_keyboard_xhs"
         android:visibility="gone"

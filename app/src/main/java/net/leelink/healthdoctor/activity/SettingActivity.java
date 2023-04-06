@@ -11,7 +11,7 @@ import net.leelink.healthdoctor.app.BaseActivity;
 
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    RelativeLayout rl_back,rl_unlogin,rl_xieyi,rl_private,rl_about_us,rl_change_phone,rl_change_password;
+    RelativeLayout rl_back,rl_unlogin,rl_xieyi,rl_private,rl_about_us,rl_change_phone,rl_change_password,rl_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         rl_change_phone.setOnClickListener(this);
         rl_change_password = findViewById(R.id.rl_change_password);
         rl_change_password.setOnClickListener(this);
+        rl_user = findViewById(R.id.rl_user);
+        rl_user.setOnClickListener(this);
     }
 
     @Override
@@ -49,13 +51,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.rl_xieyi:
                 Intent intent = new Intent(this,WebActivity.class);
                 intent.putExtra("type","distribution");
-                intent.putExtra("url","http://www.llky.net.cn/doctor/protocol.html");
+                intent.putExtra("url","https://www.llky.net.cn/doctor/protocol.html");
                 startActivity(intent);
                 break;
             case R.id.rl_private:
                 Intent intent1 = new Intent(this,WebActivity.class);
                 intent1.putExtra("type","distribution");
-                intent1.putExtra("url","http://www.llky.net.cn/doctor/privacyPolicy.html");
+                intent1.putExtra("url","https://www.llky.net.cn/doctor/privacyPolicy.html");
                 startActivity(intent1);
                 break;
             case R.id.rl_about_us:
@@ -71,6 +73,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.rl_change_password:
                 Intent intent4 = new Intent(this,ChangePasswordActivity.class);
                 startActivity(intent4);
+                break;
+            case R.id.rl_user:
+                Intent intent5 = new Intent(this,NowUserActivity.class);
+                startActivity(intent5);
                 break;
 
         }

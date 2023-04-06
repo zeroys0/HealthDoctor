@@ -182,9 +182,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                                         cv.put("type", jsonObject.getInt("type"));
                                         cv.put("RecorderTime", 0);
                                         db.insert("MessageDataBase", null, cv);
-                                        db.close();
                                     }
                                 }
+                                db.close();
                             } else {
                                 Toast.makeText(MainActivity.this, json.getString("message"), Toast.LENGTH_LONG).show();
                             }

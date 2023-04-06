@@ -144,5 +144,8 @@ public class Urls {
     //查询患者信息
     public String ELDERLY_INFO = WEBSITE+"elderly-info";
 
+    //注销帐号
+    public String CANCELACCOUNT = IP+"/jk/doctoerAngel/cancelAccount"; //注销账号
+
 
 }
