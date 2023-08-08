@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -35,6 +36,8 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -42,6 +45,7 @@ import com.lzy.okgo.model.Response;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.app.BaseActivity;
 import net.leelink.healthdoctor.app.MyApplication;
+import net.leelink.healthdoctor.bean.ExpertBean;
 import net.leelink.healthdoctor.bean.HospitalBean;
 import net.leelink.healthdoctor.util.BitmapCompress;
 import net.leelink.healthdoctor.util.Urls;
@@ -49,6 +53,7 @@ import net.leelink.healthdoctor.util.Urls;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +67,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private Button btn_confirm;
     private ImageView img_head, id_card, id_card_back, img_tag, img_physician, img_diploma, img_title;
     private File head_file, card_file, card_back_file, tag_file, physician_file, diploma_file, title_file;
+    private List<ExpertBean> list;
+    private int expert_id;
     Context context;
     private Bitmap bitmap = null;
     private Bitmap card_bitmap = null;
@@ -85,8 +92,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private final static int TITLE_ALBUM = 13;
     private final static int TITLE_PHOTO = 14;
     String cardBackPath, cardPositivePath, diplomaImgPath, physicianImgPath, tagImgPath, titleImgPath, imgPath;
-    private EditText ed_subject_phone, ed_skill, ed_name, ed_contact_name, ed_work_exp,ed_id;
-
+    private EditText ed_subject_phone, ed_skill, ed_name, ed_honor, ed_work_exp,ed_id,ed_educate,ed_regist_organ,ed_doctor_certificateNo,ed_diplomaNo;
+    private TextView tv_expert_area;
     String hospitalId;
 
 
@@ -130,11 +137,17 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         ed_subject_phone = findViewById(R.id.ed_subject_phone);
         ed_skill = findViewById(R.id.ed_skill);
         ed_name = findViewById(R.id.ed_name);
-        ed_contact_name = findViewById(R.id.ed_contact_name);
+        ed_honor = findViewById(R.id.ed_honor);
         tv_professional = findViewById(R.id.tv_professional);
         tv_professional.setOnClickListener(this);
         ed_work_exp = findViewById(R.id.ed_work_exp);
         ed_id = findViewById(R.id.ed_id);
+        tv_expert_area = findViewById(R.id.tv_expert_area);
+        tv_expert_area.setOnClickListener(this);
+        ed_educate = findViewById(R.id.ed_educate);
+        ed_regist_organ = findViewById(R.id.ed_regist_organ);
+        ed_doctor_certificateNo = findViewById(R.id.ed_doctor_certificateNo);
+        ed_diplomaNo = findViewById(R.id.ed_diplomaNo);
     }
 
 
@@ -146,9 +159,16 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             tv_professional.setText(MyApplication.userInfo.getDuties());
             ed_subject_phone.setText(MyApplication.userInfo.getTelephone());
             ed_skill.setText(MyApplication.userInfo.getSkill());
-            ed_contact_name.setText(MyApplication.userInfo.getHonor());
+            ed_honor.setText(MyApplication.userInfo.getHonor());
             ed_work_exp.setText(MyApplication.userInfo.getWorkHistory());
             hospitalId = MyApplication.userInfo.getHospitalId();
+            ed_id.setText(MyApplication.userInfo.getIdNumber());
+            ed_educate.setText(MyApplication.userInfo.getEducation());
+            tv_expert_area.setText(MyApplication.userInfo.getDoctorTypeName());
+            expert_id = MyApplication.userInfo.getDoctorTypeId();
+            ed_regist_organ.setText(MyApplication.userInfo.getRegistOrgan());
+            ed_doctor_certificateNo.setText(MyApplication.userInfo.getDoctorCertificateNo());
+            ed_diplomaNo.setText(MyApplication.userInfo.getDiplomaNo());
             if (MyApplication.userInfo.getImgPath() != null && !MyApplication.userInfo.getImgPath().equals("")) {
                 Glide.with(context).load(Urls.getInstance().IMG_URL + MyApplication.userInfo.getImgPath()).into(img_head);
                 imgPath = MyApplication.userInfo.getImgPath();
@@ -203,6 +223,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.btn_confirm:
                 submit();
+                break;
+            case R.id.tv_expert_area:   //选择专业领域
+                getExpertArea();
                 break;
             case R.id.img_head:
 
@@ -383,11 +406,17 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             jsonObject.put("imgPath", imgPath);
             jsonObject.put("physicianImgPath", physicianImgPath);
             jsonObject.put("name", ed_name.getText().toString().trim());
-            jsonObject.put("honor", ed_contact_name.getText().toString().trim());
+            jsonObject.put("honor", ed_honor.getText().toString().trim());
             jsonObject.put("tagImgPath", tagImgPath);
             jsonObject.put("title", tv_professional.getText().toString().trim());
             jsonObject.put("titleImgPath", titleImgPath);
             jsonObject.put("workHistory", ed_work_exp.getText().toString().trim());
+            jsonObject.put("idNumber", ed_id.getText().toString().trim());
+            jsonObject.put("doctorTypeId", expert_id);
+            jsonObject.put("education", ed_educate.getText().toString().trim());
+            jsonObject.put("registOrgan", ed_regist_organ.getText().toString().trim());
+            jsonObject.put("diplomaNo", ed_diplomaNo.getText().toString().trim());
+            jsonObject.put("doctorCertificateNo", ed_doctor_certificateNo.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -404,7 +433,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                             JSONObject json = new JSONObject(body);
                             Log.d("完善信息", json.toString());
                             if (json.getInt("status") == 200) {
-                                Toast.makeText(PersonalInfoActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "提交成功,等待重新审核", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context,ExamineActivity.class);
+                                intent.putExtra("type","reExamine");
+                                startActivity(intent);
                                 finish();
                             } else {
                                 Toast.makeText(PersonalInfoActivity.this, json.getString("message"), Toast.LENGTH_LONG).show();
@@ -471,6 +503,59 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
         return s[0];
+    }
+
+    public void getExpertArea(){
+        OkGo.<String>get(Urls.getInstance().EXPERTTYPE)
+                .tag(this)
+                .params("pageNum",1)
+                .params("pageSize",100)
+                .params("organId",1)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            String body = response.body();
+                            JSONObject json = new JSONObject(body);
+                            Log.d("查询专家类型", json.toString());
+                            if (json.getInt("status") == 200) {
+                                json = json.getJSONObject("data");
+                                JSONArray jsonArray = json.getJSONArray("list");
+                                Gson gson = new Gson();
+                                list = gson.fromJson(jsonArray.toString(),new TypeToken<List<ExpertBean>>(){}.getType());
+                                showExpert(list);
+                            } else {
+                                Toast.makeText(PersonalInfoActivity.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+    }
+
+    //城市选择
+    public void showExpert(List<ExpertBean> list) {
+       List<String> expertList = new ArrayList<>();
+        for (ExpertBean expertBean : list) {
+            expertList.add(expertBean.getTypeName());
+        }
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                tv_expert_area.setText(expertList.get(options1));
+                expert_id = list.get(options1).getId();
+            }
+        })
+                .setDividerColor(Color.parseColor("#A0A0A0"))
+                .setTextColorCenter(Color.parseColor("#333333")) //设置选中项文字颜色
+                .setContentTextSize(18)//设置滚轮文字大小
+                .setOutSideCancelable(true)//点击外部dismiss default true
+                .build();
+        pvOptions.setPicker(expertList);
+        pvOptions.show();
     }
 
     //弹出机构列表

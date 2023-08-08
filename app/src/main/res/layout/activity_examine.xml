@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    tools:context=".activity.ExamineActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y185"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y80"
+            android:layout_marginBottom="@dimen/y44"
+            android:text="信息审核"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/x45" />
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y185">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x45"
+                android:layout_marginTop="@dimen/y95"
+                android:src="@drawable/arrow_left_black" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="@dimen/x432"
+        android:layout_height="@dimen/y432"
+        android:src="@drawable/doctor_examine"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y300"/>
+    <TextView
+        android:layout_width="@dimen/x569"
+        android:layout_height="wrap_content"
+        android:text="您已申请注册成为医生，平台将在2~3个工作日内完成审核，请您耐心等待。"
+        android:textColor="#999999"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/x43"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/y30"
+        />
+</LinearLayout>

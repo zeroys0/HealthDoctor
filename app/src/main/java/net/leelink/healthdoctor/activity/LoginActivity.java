@@ -68,6 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     PopupWindow pop;
     private Context context;
     private CheckBox cb_agree;
+    boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +160,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Urls.H5_IP = h5_ip;
         String c_ip = sp.getString("c_ip", "");
         Urls.C_IP = c_ip;
+        if (ip.equals("")) {
+            getCode("000002");
+        } else {
+            first = false;
+        }
 
         if (!token.equals("") && !ip.equals("")) {
             MyApplication.token = token;
@@ -265,8 +271,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                 SharedPreferences.Editor editor = sp.edit();
                                 json = json.getJSONObject("data");
                                 int state = json.getInt("state");
-                                if(state==0 || state == 5){ //判断医生是否注册
-                                    Intent intent = new Intent(LoginActivity.this,PersonalInfoActivity.class);
+                                if (state == 0 || state == 5) { //判断医生是否注册
+                                    Intent intent = new Intent(LoginActivity.this, PersonalInfoActivity.class);
+                                    startActivity(intent);
+                                } else if (state == 1) {
+                                    Intent intent = new Intent(LoginActivity.this, ExamineActivity.class);
                                     startActivity(intent);
                                 } else {
                                     editor.putString("secretKey", json.getString("token"));
@@ -463,7 +472,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                     Urls.H5_IP = json.getString("h5Url");
                                     Urls.C_IP = json.getString("clientInfoUrl");
                                     editor.putString("code", code);
-                                    Toast.makeText(LoginActivity.this, "切换商户成功", Toast.LENGTH_SHORT).show();
+                                    if (first) {
+                                        first = false;
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "切换商户成功", Toast.LENGTH_SHORT).show();
+
+                                    }
                                     editor.apply();
                                 } else {
                                     Toast.makeText(LoginActivity.this, "商户编码错误", Toast.LENGTH_SHORT).show();

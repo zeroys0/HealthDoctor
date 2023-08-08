@@ -75,11 +75,18 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
 
     //修改密码(忘记密码)
     public void resetPassword(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("telephone", ed_phone.getText().toString().trim());
+            jsonObject.put("code",ed_code.getText().toString().trim());
+            jsonObject.put("password",ed_password.getText().toString().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         OkGo.<String>post(Urls.getInstance().PASSWORD)
                 .tag(this)
-                .params("telephone", ed_phone.getText().toString().trim())
-                .params("code",ed_code.getText().toString().trim())
-                .params("password",ed_password.getText().toString().trim())
+                .upJson(jsonObject)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -87,7 +94,7 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
                             String body = response.body();
                             JSONObject json = new JSONObject(body);
                             Log.d("修改密码",body);
-                            if (json.getInt("ResultCode") == 200) {
+                            if (json.getInt("message") == 200) {
                                 Toast.makeText(ChangePasswordActivity.this, "修改密码成功", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {

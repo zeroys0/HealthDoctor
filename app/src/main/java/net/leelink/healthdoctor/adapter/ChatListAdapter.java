@@ -69,7 +69,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         }
         String time = formatTime(list.get(position).getTime());
         holder.tv_time.setText(time);
-        OkGo.<String>get(Urls.getInstance().CHAT_USERINFO + "/" + list.get(position).getReceiveId()+"/2")
+        OkGo.<String>get(Urls.getInstance().CHAT_USERINFO + "/" + list.get(position).getReceiveId()+"/1")
                 .tag(this)
                 .headers("token", MyApplication.token)
                 .execute(new StringCallback() {
@@ -81,7 +81,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                             Log.d("消息", json.toString());
                             if (json.getInt("status") == 200) {
                                 JSONArray jsonArray = json.getJSONArray("data");
-                                String img_head = jsonArray.getJSONObject(0).getString("img_path");
+                                String img_head = jsonArray.getJSONObject(0).getString("imgPath");
                                 Glide.with(context).load(Urls.getInstance().IMG_URL+img_head).into(holder.img_head);
                                 String name = jsonArray.getJSONObject(0).getString("userName");
                                 holder.tv_name.setText(name);

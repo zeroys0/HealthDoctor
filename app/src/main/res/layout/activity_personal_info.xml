@@ -367,39 +367,17 @@
                         android:layout_marginRight="@dimen/x36" />
 
                 </RelativeLayout>
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_marginTop="@dimen/y30"
-                android:layout_marginRight="@dimen/x30"
-                android:background="@drawable/bg_white_radius"
-                android:orientation="vertical">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y140">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x36"
-                        android:text="*"
-                        android:textColor="@color/red" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x70"
-                        android:text="擅长领域"
+                        android:text="技能专长"
                         android:textColor="@color/text_black" />
 
                     <EditText
@@ -424,7 +402,6 @@
                         android:layout_marginRight="@dimen/x36" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y140">
@@ -434,11 +411,11 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x70"
-                        android:text="个人简介"
+                        android:text="教育培训精力"
                         android:textColor="@color/text_black" />
 
                     <EditText
-                        android:id="@+id/ed_contact_name"
+                        android:id="@+id/ed_educate"
                         android:layout_width="@dimen/x600"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
@@ -459,7 +436,6 @@
                         android:layout_marginRight="@dimen/x36" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y140">
@@ -469,7 +445,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x70"
-                        android:text="职业经历"
+                        android:text="工作经历"
                         android:textColor="@color/text_black" />
 
                     <EditText
@@ -494,6 +470,234 @@
                         android:layout_marginRight="@dimen/x36" />
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y140">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x70"
+                        android:text="获得荣誉"
+                        android:textColor="@color/text_black" />
+
+                    <EditText
+                        android:id="@+id/ed_honor"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="@dimen/x42" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y1"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:layout_marginRight="@dimen/x36" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x31"
+                android:layout_marginTop="@dimen/y37"
+                android:text="医师资质"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/x44"
+
+                />
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:layout_marginRight="@dimen/x30"
+                android:background="@drawable/bg_white_radius"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y140">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:text="*"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x70"
+                        android:text="专家领域"
+                        android:textColor="@color/text_black" />
+
+                    <TextView
+                        android:id="@+id/tv_expert_area"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="@dimen/x42" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y1"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:layout_marginRight="@dimen/x36" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y140">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:text="*"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x70"
+                        android:text="职业医师注册机构"
+                        android:textColor="@color/text_black" />
+
+                    <EditText
+                        android:id="@+id/ed_regist_organ"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="@dimen/x42" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y1"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:layout_marginRight="@dimen/x36" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y140">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:text="*"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x70"
+                        android:text="医师执业证书编号"
+                        android:textColor="@color/text_black" />
+
+                    <EditText
+                        android:id="@+id/ed_doctor_certificateNo"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="@dimen/x42" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y1"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:layout_marginRight="@dimen/x36" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y140">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:text="*"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x70"
+                        android:text="医师资格证书编号"
+                        android:textColor="@color/text_black" />
+
+                    <EditText
+                        android:id="@+id/ed_diplomaNo"
+                        android:layout_width="@dimen/x600"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="@dimen/x30"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="@dimen/x42" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y1"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x36"
+                        android:layout_marginRight="@dimen/x36" />
+
+                </RelativeLayout>
+
             </LinearLayout>
 
             <TextView

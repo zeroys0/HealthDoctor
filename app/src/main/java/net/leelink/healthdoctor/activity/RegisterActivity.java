@@ -14,6 +14,7 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText ed_telephone, ed_code, ed_password, ed_confirm;
     private int time = 60;
     private Button btn_submit;
+    private CheckBox cb_agree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         ed_password = findViewById(R.id.ed_password);
         ed_confirm = findViewById(R.id.ed_confirm);
         tv_text = findViewById(R.id.tv_text);
-        SpannableString spannableString = new SpannableString("注册代表您已阅读并同意<<用户协议>>及<<隐私政策>>");
+        cb_agree = findViewById(R.id.cb_agree);
+        SpannableString spannableString = new SpannableString("已阅读并同意<<用户协议>>及<<隐私政策>>");
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(View widget) {
                 Intent intent = new Intent(RegisterActivity.this, WebActivity.class);
-                intent.putExtra("url", "http://api.iprecare.com:6280/h5/ambProtocol.html");
+                intent.putExtra("url", "https://www.llky.net.cn/doctor/protocol.html");
                 intent.putExtra("title", "用户协议");
                 startActivity(intent);
             }
@@ -72,13 +75,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 super.updateDrawState(ds);
                 ds.setColor(getResources().getColor(R.color.blue)); //设置颜色
             }
-        }, 11, 19, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, 6, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(View widget) {
 
                 Intent intent = new Intent(RegisterActivity.this, WebActivity.class);
-                intent.putExtra("url", "http://api.iprecare.com:6280/h5/ambPrivacyPolicy.html");
+                intent.putExtra("url", "https://www.llky.net.cn/doctor/privacyPolicy.html");
                 intent.putExtra("title", "隐私政策");
                 startActivity(intent);
             }
@@ -88,7 +91,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 super.updateDrawState(ds);
                 ds.setColor(getResources().getColor(R.color.blue)); //设置颜色
             }
-        }, 20, 28, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, 16, 23, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv_text.append(spannableString);
         tv_text.setMovementMethod(LinkMovementMethod.getInstance());  //很重要，点击无效就是由于没有设置这个引起
         tv_done = findViewById(R.id.tv_done);
@@ -133,6 +136,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (ed_confirm.getText().toString().equals("") || !ed_password.getText().toString().equals(ed_confirm.getText().toString())) {
             Toast.makeText(this, "密码不一致", Toast.LENGTH_SHORT).show();
             return;
+        }
+        if(!cb_agree.isChecked()){
+            Toast.makeText(this, "请阅读并同意用户协议及隐私政策", Toast.LENGTH_SHORT).show();
         }
         JSONObject jsonObject = new JSONObject();
         try {

@@ -170,6 +170,7 @@ public class UnCureFragment extends BaseFragment implements OnOrderListener {
         intent.putExtra("remark",list.get(position).getRemark());
         intent.putExtra("state",0);
         intent.putExtra("orderId",list.get(position).getOrderId());
+        intent.putExtra("name",list.get(position).getElderlyName());
         startActivity(intent);
     }
 

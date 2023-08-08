@@ -29,12 +29,14 @@ import com.allenliu.versionchecklib.v2.builder.NotificationBuilder;
 import net.leelink.healthdoctor.R;
 import net.leelink.healthdoctor.activity.LoginActivity;
 import net.leelink.healthdoctor.app.MyApplication;
+import net.leelink.healthdoctor.im.data.MessageBean;
 import net.leelink.healthdoctor.im.data.MessageDataHelper;
 import net.leelink.healthdoctor.im.data.MessageListHelper;
 import net.leelink.healthdoctor.im.modle.ChatMessage;
 import net.leelink.healthdoctor.im.util.Util;
 import net.leelink.healthdoctor.util.Urls;
 
+import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;

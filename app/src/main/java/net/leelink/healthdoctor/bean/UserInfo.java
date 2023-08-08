@@ -9,7 +9,7 @@ public class UserInfo {
     private String salt;
     private String organId;
     private String hospitalId;
-    private String doctorTypeId;
+    private int doctorTypeId;
     private String shengId;
     private String shiId;
     private String xianId;
@@ -62,6 +62,15 @@ public class UserInfo {
     private int phoneState;
     private int homeState;
     private int hospitalState;
+    private String doctorTypeName;
+
+    public String getDoctorTypeName() {
+        return doctorTypeName;
+    }
+
+    public void setDoctorTypeName(String doctorTypeName) {
+        this.doctorTypeName = doctorTypeName;
+    }
 
     public String getId() {
         return id;
@@ -111,11 +120,11 @@ public class UserInfo {
         this.hospitalId = hospitalId;
     }
 
-    public String getDoctorTypeId() {
+    public int getDoctorTypeId() {
         return doctorTypeId;
     }
 
-    public void setDoctorTypeId(String doctorTypeId) {
+    public void setDoctorTypeId(int doctorTypeId) {
         this.doctorTypeId = doctorTypeId;
     }
 

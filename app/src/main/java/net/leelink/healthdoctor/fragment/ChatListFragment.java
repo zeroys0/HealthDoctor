@@ -140,7 +140,7 @@ public class ChatListFragment extends BaseFragment implements OnOrderListener {
         String clientId = chatMessageList.get(position).getReceiveId();
 
         Log.e( "onItemClick: ",clientId );
-        OkGo.<String>get(Urls.getInstance().CHAT_USERINFO + "/" + clientId+"/2")
+        OkGo.<String>get(Urls.getInstance().CHAT_USERINFO + "/" + clientId+"/1")
                 .tag(this)
                 .headers("token", MyApplication.token)
                 .execute(new StringCallback() {
@@ -156,11 +156,12 @@ public class ChatListFragment extends BaseFragment implements OnOrderListener {
                                 intent.putExtra("clientId",clientId);
                                 String img_head = "";
                                 try {
-                                    img_head = jsonArray.getJSONObject(0).getString("img_path");
-                                    intent.putExtra("name",jsonArray.getJSONObject(0).getString("userName"));
+                                    img_head = jsonArray.getJSONObject(0).getString("imgPath");
                                 } catch (Exception e){
-                                    intent.putExtra("receive_head",img_head);
+
                                 }
+                                intent.putExtra("receive_head",img_head);
+                                intent.putExtra("name",jsonArray.getJSONObject(0).getString("userName"));
                                 intent.putExtra("state",1);
                                 startActivity(intent);
                             } else if (json.getInt("status") == 505) {

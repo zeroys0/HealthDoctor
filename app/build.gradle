@@ -7,8 +7,8 @@ android {
         applicationId "net.leelink.healthdoctor"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.08"
+        versionCode 11
+        versionName "1.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -68,6 +68,10 @@ dependencies {
     //高德地图
     implementation 'com.amap.api:3dmap:latest.integration'
     implementation 'com.amap.api:search:latest.integration'
+
+
+    //图片缩放功能
+    implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:1.7.3'
 
     implementation 'com.just.agentweb:agentweb:4.0.2'
     implementation 'org.greenrobot:eventbus:3.1.1'

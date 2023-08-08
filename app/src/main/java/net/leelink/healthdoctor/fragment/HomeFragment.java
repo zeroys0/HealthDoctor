@@ -76,9 +76,14 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
         context = getContext();
         init(view);
         initData();
-        initList();
         initRefreshLayout(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initList();
     }
 
     public void init(View view){
@@ -188,8 +193,9 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
                                 JSONArray jsonArray = json.getJSONArray("list");
                                 hasNextPage = json.getBoolean("hasNextPage");
                                 Gson gson = new Gson();
-                                List<OrderBean> orderBeans = gson.fromJson(jsonArray.toString(),new TypeToken<List<OrderBean>>(){}.getType());
-                                list.addAll(orderBeans);
+//                                List<OrderBean> orderBeans = gson.fromJson(jsonArray.toString(),new TypeToken<List<OrderBean>>(){}.getType());
+//                                list.addAll(orderBeans);
+                                list = gson.fromJson(jsonArray.toString(),new TypeToken<List<OrderBean>>(){}.getType());
                                 patientAdapter = new PatientAdapter(list,context,HomeFragment.this);
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
                                 quest_list.setAdapter(patientAdapter);
@@ -214,8 +220,9 @@ public class HomeFragment  extends BaseFragment implements View.OnClickListener 
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("clientId",list.get(position).getClientId());
         intent.putExtra("receive_head",list.get(position).getHeadImg());
+        intent.putExtra("name",list.get(position).getElderlyName());
         intent.putExtra("remark",list.get(position).getRemark());
-        intent.putExtra("state",list.get(position).getState());
+        intent.putExtra("state",0);
         intent.putExtra("orderId",list.get(position).getOrderId());
         startActivity(intent);
     }

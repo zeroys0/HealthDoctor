@@ -135,6 +135,9 @@ public class Urls {
     //查询未读消息
     public String HISTORY = C_IP + "/history";
 
+    //查询专家领域类型
+    public String EXPERTTYPE = IP +"/appointmentDoctor/ExpertType";
+
     //根据聊天id获取信息
     public String CHAT_USERINFO = C_IP + "/userinfo";
 

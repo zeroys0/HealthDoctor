@@ -167,7 +167,7 @@ public class CureDoneFragment extends BaseFragment implements OnOrderListener {
         intent.putExtra("clientId",list.get(position).getClientId());
         intent.putExtra("receive_head",list.get(position).getHeadImg());
         intent.putExtra("remark",list.get(position).getRemark());
-        intent.putExtra("state",1);
+        intent.putExtra("state",2);
         intent.putExtra("orderId",list.get(position).getOrderId());
         intent.putExtra("name",list.get(position).getElderlyName());
         startActivity(intent);
